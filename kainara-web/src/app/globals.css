@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Earthy & Ethereal Palette (design.md) ─────────────────── */
+  --color-ivory:          #FAF9F6;
+  --color-ivory-warm:     #F4EFEA;
+  --color-ivory-dark:     #ECE5DD;
+
+  --color-sogan:          #6B4C3A;
+  --color-sogan-50:       #FAF6F2;
+  --color-sogan-100:      #F3ECE5;
+  --color-sogan-200:      #E4D4C7;
+  --color-sogan-300:      #C8AE9A;
+  --color-sogan-400:      #9F7B62;
+  --color-sogan-500:      #6B4C3A;
+  --color-sogan-600:      #573D2E;
+  --color-sogan-700:      #432E22;
+  --color-sogan-800:      #2F2018;
+  --color-sogan-900:      #1C130E;
+
+  --color-emas:           #D4AF37;
+  --color-emas-light:     #F3E3A2;
+  --color-emas-dark:      #A8861B;
+  --color-emas-300:       #F0D679;
+  --color-emas-400:       #E1C355;
+  --color-emas-500:       #D4AF37;
+  --color-emas-600:       #B89222;
+
+  --color-batik-indigo:   #2C3E6B;
+  --color-batik-merah:    #8B2020;
+
+  /* ── Typography ─────────────────────────────────────────── */
+  --font-sans:   var(--font-sans), system-ui, sans-serif;
+  --font-serif:  var(--font-serif), Georgia, serif;
+
+  /* ── Border Radius (design.md) ─────────────────────────── */
+  --radius-bento: 24px;
+  --radius-img:   24px;
+  --radius-pill:  9999px;
+
+  /* ── Shadows (design.md) ────────────────────────────────── */
+  --shadow-ethereal: 0 10px 40px rgba(107, 76, 58, 0.08);
+  --shadow-ethereal-hover: 0 18px 50px rgba(107, 76, 58, 0.14);
+  --shadow-card:     0 10px 40px rgba(107, 76, 58, 0.08);
+  --shadow-gold:     0 6px 28px rgba(212, 175, 55, 0.35);
+}
+
+/* ── Base reset / global styles ────────────────────────────── */
+:root {
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--color-ivory);
+  color: var(--color-sogan-800);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar – refined editorial style */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(107, 76, 58, 0.25) transparent;
+}
+
+/* Glassmorphism Surface Utility */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(107, 76, 58, 0.1);
+}
+
+/* Batik pattern divider utility */
+.batik-divider {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-emas-500) 0px,
+    var(--color-emas-500) 3px,
+    transparent 3px,
+    transparent 14px
+  );
+  height: 2px;
+  width: 100%;
+}
+
+/* Custom laser scan glow animation */
+@keyframes scanline {
+  0% { top: 0%; opacity: 0.8; }
+  50% { top: 96%; opacity: 1; }
+  100% { top: 0%; opacity: 0.8; }
+}
+
+.animate-scanline {
+  animation: scanline 2.8s ease-in-out infinite;
+}
