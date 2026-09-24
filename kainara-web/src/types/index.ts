@@ -3,11 +3,11 @@ export interface Motif {
   name: string;
   slug: string;
   category: string;
-  philosophy: string;
   origin: string;
+  philosophy: string;
+  eventContext?: string;
   colors: string[];
   imageUrl: string;
-  accuracy?: number;
 }
 
 export interface Outfit {

@@ -51,6 +51,21 @@ CLASS_NAMES = [
     "motif_siger",
 ]
 
+# HARDCODED PHILOSOPHY (Berdasarkan mockData.ts Frontend)
+MOTIF_PHILOSOPHY = {
+    "motif_belah_ketupat": "Ragam geometris belah ketupat melambangkan empat pilar kehidupan masyarakat adat Lampung, yaitu keselarasan mikrokosmos dan makrokosmos, kesucian batin, serta keseimbangan moral dalam setiap musyawarah adat.",
+    "motif_bunga_ashar": "Terinspirasi dari flora kembang asar (bunga pukul empat) yang senantiasa mekar menjelang sore. Menjadi simbol kedisiplinan hidup, pengingat waktu ibadah, serta keanggunan dan kehalusan budi pekerti kaum wanita Lampung.",
+    "motif_gajah": "Gajah merupakan fauna ikonik bumi Ruwa Jurai yang merepresentasikan kekuatan jiwa, kebijaksanaan seorang pemimpin, loyalitas keluarga, serta tanggung jawab mulia menjaga kelestarian alam lingkungan.",
+    "motif_gamolan": "Mengabadikan instrumen gamolan bambu purba Lampung ke dalam pola kain tenun. Melambangkan keharmonisan hubungan sosial antar-warga, kekayaan musikal leluhur, dan kegembiraan perayaan kebudayaan.",
+    "motif_kapal": "Kapal melambangkan bahtera transisi siklus kehidupan manusia, mulai dari kelahiran, kedewasaan, pernikahan, hingga akhir hayat, serta simbol persatuan antarsuku masyarakat pesisir Lampung.",
+    "motif_pucuk_rebung": "Susunan segitiga berderet dari tunas bambu melambangkan kekuatan menghadapi rintangan hidup, pertumbuhan budi pekerti yang kokoh dari generasi ke generasi, dan tatanan hirarki kepemimpinan adat yang luhur.",
+    "motif_sembagi": "Perpaduan kearifan wastra lokal dengan pengaruh perdagangan rempah nusantara. Menyimbolkan kemakmuran, derajat martabat keluarga terpandang, dan keagungan busana kebesaran para tetua adat.",
+    "motif_siger": "Mahkota emas sembilan lekuk kehormatan wanita Lampung. Melambangkan kepemimpinan sembilan marga besar (Abung Siwo Mego), martabat luhur kaum ibu, serta simbol identitas tertinggi tanah Lampung."
+}
+
+def get_motif_philosophy(motif_id: str) -> str:
+    return MOTIF_PHILOSOPHY.get(motif_id, "Filosofi motif tidak ditemukan.")
+
 # === CONFIG SKIN TONE SCANNER ===
 SKIN_CLASS_NAMES = ["cool", "neutral", "warm"]
 
@@ -165,7 +180,7 @@ async def scan_batik(image: UploadFile = File(...)):
             "motif_id": top_motif_id,
             "name": top_motif_id.replace("_", " ").title(),
             "confidence": round(top_confidence, 4),
-            "philosophy": "", 
+            "philosophy": get_motif_philosophy(top_motif_id), 
             "alternatives": [{"motif_id": m, "name": m.replace("_", " ").title(), "confidence": round(c, 4)} for m, c, _ in results_scored[1:3]]
         }
     }

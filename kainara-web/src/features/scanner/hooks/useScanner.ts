@@ -100,9 +100,15 @@ export function useScanner() {
       const motifId = resData.data.motif_id;
       const confidence = resData.data.confidence;
       const motifName = resData.data.name;
+      const backendPhilosophy = (resData.data as Record<string, unknown>).philosophy as string | undefined;
 
       // Ambil data motif, atau fallback jika motif tersebut adalah class baru dari backend
       const motif = getMotifById(motifId) || createFallbackMotif(motifId, motifName);
+      
+      // Override philosophy frontend dengan philosophy dari backend jika ada
+      if (backendPhilosophy && backendPhilosophy.length > 0) {
+        motif.philosophy = backendPhilosophy;
+      }
 
       const resultPayload: ScanResult = {
         motif,

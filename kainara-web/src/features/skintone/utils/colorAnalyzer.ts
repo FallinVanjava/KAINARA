@@ -12,10 +12,11 @@ function generateRecommendation(tone: "warm" | "cool" | "neutral"): SkinToneResu
           m.id === "motif_siger" ||
           m.id === "motif_pucuk_rebung" ||
           m.id === "motif_sembagi" ||
-          m.id === "motif_gajah"
-      ),
+          m.id === "motif_gajah" ||
+          m.id === "motif_gamolan"
+      ).slice(0, 4),
       recommendations: OUTFIT_DATA.filter((o) =>
-        o.tags.includes("earth-tone") || o.motifId === "motif_siger" || o.motifId === "motif_sembagi"
+        o.tags.includes("earth-tone") || o.motifId === "motif_siger" || o.motifId === "motif_sembagi" || o.motifId === "motif_gajah" || o.motifId === "motif_gamolan"
       ).slice(0, 4),
     };
   }
@@ -29,9 +30,9 @@ function generateRecommendation(tone: "warm" | "cool" | "neutral"): SkinToneResu
           m.id === "motif_kapal" ||
           m.id === "motif_belah_ketupat" ||
           m.id === "motif_bunga_ashar"
-      ),
+      ).slice(0, 4),
       recommendations: OUTFIT_DATA.filter((o) =>
-        o.tags.includes("monokrom") || o.motifId === "motif_kapal" || o.motifId === "motif_belah_ketupat"
+        o.tags.includes("monokrom") || o.motifId === "motif_kapal" || o.motifId === "motif_belah_ketupat" || o.tags.includes("floral")
       ).slice(0, 4),
     };
   }
@@ -40,8 +41,8 @@ function generateRecommendation(tone: "warm" | "cool" | "neutral"): SkinToneResu
   return {
     tone: "neutral",
     palette: ["#795548", "#607D8B", "#FFC107", "#E0E0E0"],
-    recommendedMotifs: MOTIF_DATA,
-    recommendations: OUTFIT_DATA.slice(0, 4),
+    recommendedMotifs: [...MOTIF_DATA].sort(() => 0.5 - Math.random()).slice(0, 4),
+    recommendations: [...OUTFIT_DATA].sort(() => 0.5 - Math.random()).slice(0, 4),
   };
 }
 

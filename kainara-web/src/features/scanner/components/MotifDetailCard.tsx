@@ -52,6 +52,22 @@ export function MotifDetailCard({
     }
   };
 
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Hasil Scan Wastra - KAINARA",
+          text: `Saya baru saja memindai wastra dengan AI KAINARA. Motif ini teridentifikasi sebagai ${motif.name} (Tingkat keyakinan: ${accuracy}%).\n\nMakna: ${motif.philosophy}\n\nEksplorasi warisan budaya dan temukan warna busana yang paling cocok untukmu di KAINARA!`,
+          url: window.location.origin,
+        });
+      } catch (err) {
+        console.error("User membatalkan share atau error", err);
+      }
+    } else {
+      alert("Browser Anda belum mendukung fitur berbagi langsung. Silakan copy URL kami secara manual.");
+    }
+  };
+
   return (
     <>
       <Toast
@@ -229,9 +245,21 @@ export function MotifDetailCard({
             <h3 className="text-xs font-bold text-sogan-400 uppercase tracking-widest mb-2">
               Filosofi &amp; Makna Simbolis
             </h3>
-            <p className="font-serif text-sogan-800 text-base sm:text-lg leading-relaxed">
+            <p className="font-serif text-sogan-800 text-base sm:text-lg leading-relaxed mb-4">
               {motif.philosophy}
             </p>
+
+            {motif.eventContext && (
+              <div className="flex items-start gap-2.5 bg-emas/10 p-3.5 rounded-2xl border border-emas/20">
+                <svg className="size-5 text-emas-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                </svg>
+                <div>
+                  <span className="text-[10px] font-bold text-emas-700 uppercase tracking-widest block mb-0.5">Etika &amp; Acara</span>
+                  <p className="text-xs font-medium text-sogan-800 leading-snug">{motif.eventContext}</p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Color Swatches */}
@@ -252,8 +280,8 @@ export function MotifDetailCard({
           </div>
 
           {/* Action CTA */}
-          {onScanAgain && (
-            <div className="pt-2">
+          <div className="pt-2 flex flex-col gap-3">
+            {onScanAgain && (
               <Button
                 variant="primary"
                 className="w-full py-3.5 text-sm sm:text-base"
@@ -261,8 +289,18 @@ export function MotifDetailCard({
               >
                 Pindai Wastra Lainnya
               </Button>
-            </div>
-          )}
+            )}
+            <Button
+              variant="outline"
+              className="w-full py-3.5 text-sm sm:text-base flex items-center justify-center gap-2"
+              onClick={handleShare}
+            >
+              <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+              </svg>
+              Bagikan Hasil Scan
+            </Button>
+          </div>
 
           {/* Correction Feedback Trigger */}
           <div className="text-center pt-3 border-t border-sogan-100">

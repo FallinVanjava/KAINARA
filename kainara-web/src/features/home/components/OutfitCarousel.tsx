@@ -108,6 +108,11 @@ export function OutfitCarousel({
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [filterHijab, setFilterHijab] = useState(false);
+
+  const displayedOutfits = filterHijab
+    ? outfits.filter((o) => o.tags.includes("hijab-friendly"))
+    : outfits;
 
   const updateScrollState = useCallback(() => {
     const el = scrollRef.current;
@@ -137,43 +142,61 @@ export function OutfitCarousel({
           </p>
         </div>
 
-        <div className="flex gap-2 self-end sm:self-auto">
-          <button
-            type="button"
-            aria-label="Gulir ke kiri"
-            disabled={!canScrollLeft}
-            onClick={() => scroll("left")}
-            className="p-3 rounded-full border border-sogan-200/80 bg-white text-sogan-700 hover:bg-sogan-50 hover:border-emas disabled:opacity-30 disabled:pointer-events-none transition-all shadow-xs"
-          >
-            <svg
-              aria-hidden="true"
-              className="size-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
+        <div className="flex flex-col sm:flex-row items-center gap-4 self-end sm:self-auto">
+          {/* Toggle Hijab-Friendly */}
+          <label className="flex items-center gap-3 cursor-pointer bg-sogan-50 px-4 py-2 rounded-full border border-sogan-200 shadow-xs">
+            <div className="relative">
+              <input 
+                type="checkbox" 
+                className="sr-only" 
+                checked={filterHijab} 
+                onChange={() => setFilterHijab(!filterHijab)} 
+                aria-label="Filter Modest/Hijab Friendly"
+              />
+              <div className={`block w-9 h-5 rounded-full transition-colors ${filterHijab ? 'bg-emas' : 'bg-sogan-300'}`}></div>
+              <div className={`absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-transform ${filterHijab ? 'translate-x-4' : 'translate-x-0'}`}></div>
+            </div>
+            <span className="text-xs font-semibold text-sogan-800 select-none">Hijab Friendly</span>
+          </label>
+
+          <div className="flex gap-2">
+            <button
+              type="button"
+              aria-label="Gulir ke kiri"
+              disabled={!canScrollLeft}
+              onClick={() => scroll("left")}
+              className="p-3 rounded-full border border-sogan-200/80 bg-white text-sogan-700 hover:bg-sogan-50 hover:border-emas disabled:opacity-30 disabled:pointer-events-none transition-all shadow-xs"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <button
-            type="button"
-            aria-label="Gulir ke kanan"
-            disabled={!canScrollRight}
-            onClick={() => scroll("right")}
-            className="p-3 rounded-full border border-sogan-200/80 bg-white text-sogan-700 hover:bg-sogan-50 hover:border-emas disabled:opacity-30 disabled:pointer-events-none transition-all shadow-xs"
-          >
-            <svg
-              aria-hidden="true"
-              className="size-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
+              <svg
+                aria-hidden="true"
+                className="size-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              aria-label="Gulir ke kanan"
+              disabled={!canScrollRight}
+              onClick={() => scroll("right")}
+              className="p-3 rounded-full border border-sogan-200/80 bg-white text-sogan-700 hover:bg-sogan-50 hover:border-emas disabled:opacity-30 disabled:pointer-events-none transition-all shadow-xs"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+              <svg
+                aria-hidden="true"
+                className="size-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -184,11 +207,17 @@ export function OutfitCarousel({
         role="list"
         aria-label="Daftar inspirasi lookbook batik"
       >
-        {outfits.map((outfit) => (
+        {displayedOutfits.map((outfit) => (
           <div key={outfit.id} role="listitem" className="snap-start">
             <OutfitCard outfit={outfit} />
           </div>
         ))}
+
+        {displayedOutfits.length === 0 && (
+          <div className="w-full py-12 text-center text-sogan-500 text-sm">
+            Tidak ada rekomendasi outfit untuk filter saat ini.
+          </div>
+        )}
       </div>
     </section>
   );
