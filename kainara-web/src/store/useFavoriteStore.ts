@@ -12,6 +12,7 @@ interface FavoriteStoreState {
   removeFavoriteOutfit: (id: string) => void;
   toggleFavoriteOutfit: (id: string) => void;
   isOutfitFavorited: (id: string) => boolean;
+  clearAllFavorites: () => void;
 }
 
 export const useFavoriteStore = create<FavoriteStoreState>()(
@@ -32,13 +33,12 @@ export const useFavoriteStore = create<FavoriteStoreState>()(
           favoriteMotifIds: state.favoriteMotifIds.filter((m) => m !== id),
         })),
 
-      toggleFavoriteMotif: (id) => {
-        if (get().isMotifFavorited(id)) {
-          get().removeFavoriteMotif(id);
-        } else {
-          get().addFavoriteMotif(id);
-        }
-      },
+      toggleFavoriteMotif: (id) =>
+        set((state) => ({
+          favoriteMotifIds: state.favoriteMotifIds.includes(id)
+            ? state.favoriteMotifIds.filter((m) => m !== id)
+            : [...state.favoriteMotifIds, id],
+        })),
 
       isMotifFavorited: (id) => get().favoriteMotifIds.includes(id),
 
@@ -54,15 +54,20 @@ export const useFavoriteStore = create<FavoriteStoreState>()(
           favoriteOutfitIds: state.favoriteOutfitIds.filter((o) => o !== id),
         })),
 
-      toggleFavoriteOutfit: (id) => {
-        if (get().isOutfitFavorited(id)) {
-          get().removeFavoriteOutfit(id);
-        } else {
-          get().addFavoriteOutfit(id);
-        }
-      },
+      toggleFavoriteOutfit: (id) =>
+        set((state) => ({
+          favoriteOutfitIds: state.favoriteOutfitIds.includes(id)
+            ? state.favoriteOutfitIds.filter((o) => o !== id)
+            : [...state.favoriteOutfitIds, id],
+        })),
 
       isOutfitFavorited: (id) => get().favoriteOutfitIds.includes(id),
+
+      clearAllFavorites: () =>
+        set(() => ({
+          favoriteMotifIds: [],
+          favoriteOutfitIds: [],
+        })),
     }),
     {
       name: "kainara-favorites-v2",
@@ -70,3 +75,4 @@ export const useFavoriteStore = create<FavoriteStoreState>()(
     }
   )
 );
+

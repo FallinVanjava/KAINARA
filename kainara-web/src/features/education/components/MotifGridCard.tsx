@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/Badge";
+import { useFavoriteStore } from "@/store/useFavoriteStore";
 import type { Motif } from "@/types";
 
 interface MotifGridCardProps {
@@ -12,6 +13,9 @@ interface MotifGridCardProps {
 }
 
 export function MotifGridCard({ motif, index }: MotifGridCardProps) {
+  const isLiked = useFavoriteStore((s) => s.isMotifFavorited(motif.id));
+  const toggleMotif = useFavoriteStore((s) => s.toggleFavoriteMotif);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -20,7 +24,7 @@ export function MotifGridCard({ motif, index }: MotifGridCardProps) {
     >
       <Link
         href={`/education/${motif.slug}`}
-        className="group flex flex-col h-full bg-white rounded-3xl p-4 overflow-hidden shadow-[var(--shadow-ethereal)] hover:shadow-[var(--shadow-ethereal-hover)] border border-sogan-200/80 transition-all duration-300 hover:-translate-y-1.5 focus-visible:outline-2 focus-visible:outline-emas"
+        className="group relative flex flex-col h-full bg-white rounded-3xl p-4 overflow-hidden shadow-[var(--shadow-ethereal)] hover:shadow-[var(--shadow-ethereal-hover)] border border-sogan-200/80 transition-all duration-300 hover:-translate-y-1.5 focus-visible:outline-2 focus-visible:outline-emas"
         aria-label={`Pelajari lebih lanjut tentang ${motif.name}`}
       >
         <div className="relative h-56 w-full rounded-[24px] overflow-hidden bg-sogan-100 mb-4">
@@ -33,9 +37,46 @@ export function MotifGridCard({ motif, index }: MotifGridCardProps) {
             loading={index < 4 ? "eager" : "lazy"}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-sogan-950/70 via-transparent to-transparent" />
+          
           <span className="absolute bottom-3 left-3">
             <Badge variant="gold">{motif.category}</Badge>
           </span>
+
+          <motion.button
+            type="button"
+            whileTap={{ scale: 0.85 }}
+            aria-label={
+              isLiked
+                ? `Hapus ${motif.name} dari favorit`
+                : `Simpan ${motif.name} ke favorit`
+            }
+            aria-pressed={isLiked}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleMotif(motif.id);
+            }}
+            className={`absolute top-3 right-3 p-2.5 rounded-full backdrop-blur-md transition-all duration-300 z-10 ${
+              isLiked
+                ? "bg-emas text-sogan-900 shadow-[0_4px_14px_rgba(212,175,55,0.45)]"
+                : "bg-white/70 text-sogan-700 hover:bg-white hover:text-emas-600"
+            }`}
+          >
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              fill={isLiked ? "currentColor" : "none"}
+              stroke="currentColor"
+              strokeWidth={2}
+              className="size-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+              />
+            </svg>
+          </motion.button>
         </div>
 
         <div className="px-2 pb-2 flex flex-col flex-1 justify-between">
@@ -68,3 +109,4 @@ export function MotifGridCard({ motif, index }: MotifGridCardProps) {
     </motion.div>
   );
 }
+

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MOTIF_DATA } from "@/lib/constants/mockData";
 import { Badge } from "@/components/ui/Badge";
+import { FavoriteButton } from "@/features/education/components/FavoriteButton";
 
 export function generateStaticParams() {
   return MOTIF_DATA.map((motif) => ({
@@ -52,24 +53,28 @@ export default async function MotifDetailPage({
 
         <div className="absolute inset-0 flex flex-col justify-end">
           <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-28 sm:pb-36">
-            <Link
-              href="/education"
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-ivory text-xs font-semibold hover:bg-white/25 transition-colors mb-6 border border-white/20"
-            >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className="size-4"
+            <div className="flex items-center justify-between gap-4 mb-6">
+              <Link
+                href="/education"
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-ivory text-xs font-semibold hover:bg-white/25 transition-colors border border-white/20"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M17 10a.75.75 0 0 1-.75.75H5.612l4.158 3.96a.75.75 0 1 1-1.04 1.08l-5.5-5.25a.75.75 0 0 1 0-1.08l5.5-5.25a.75.75 0 1 1 1.04 1.08L5.612 9.25H16.25A.75.75 0 0 1 17 10Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              Kembali ke Katalog
-            </Link>
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  className="size-4"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M17 10a.75.75 0 0 1-.75.75H5.612l4.158 3.96a.75.75 0 1 1-1.04 1.08l-5.5-5.25a.75.75 0 0 1 0-1.08l5.5-5.25a.75.75 0 1 1 1.04 1.08L5.612 9.25H16.25A.75.75 0 0 1 17 10Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                Kembali ke Katalog
+              </Link>
+
+              <FavoriteButton id={motif.id} name={motif.name} type="motif" />
+            </div>
 
             <Badge variant="gold" className="mb-3">
               {motif.category}
