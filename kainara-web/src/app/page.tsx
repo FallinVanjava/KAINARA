@@ -258,25 +258,25 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── CURATED MOTIFS HIGHLIGHTS ───────────────────────────────── */}
+        {/* ── CURATED MOTIFS HIGHLIGHTS (Tapis Lampung) ───────────────────────────────── */}
         <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
             <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-emas-600 block mb-1">
+              <span className="text-xs font-bold uppercase tracking-widest text-emas block mb-1">
                 Kurasi Editorial
               </span>
               <h2 className="font-serif text-2xl sm:text-4xl font-bold text-sogan-900">
-                Motif Ikonik Lampung
+                Motif Ikonik Tapis Lampung
               </h2>
-              <p className="text-sogan-500 text-sm mt-1 max-w-lg">
-                Koleksi mahakarya wastra Lampung dengan nilai filosofis dan keanggunan budaya luhur.
+              <p className="text-gray-700 text-sm mt-1 max-w-lg font-sans">
+                Koleksi mahakarya tenun Tapis Lampung bertabur benang emas dan perak dengan nilai filosofis luhur.
               </p>
             </div>
             <Link
               href="/education"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-sogan-800 hover:text-emas-600 transition-colors self-start sm:self-auto"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-sogan-800 hover:text-emas transition-colors self-start sm:self-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D2AA36] rounded-md"
             >
-              Lihat Semua Motif
+              Lihat Semua Motif Tapis
               <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" className="size-4">
                 <path
                   fillRule="evenodd"
@@ -289,17 +289,17 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {MOTIF_DATA.filter((m) =>
-              ["motif_siger", "motif_gajah", "motif_kapal"].includes(m.id)
+              ["tapis_pucuk_rebung", "tapis_bintang_perak", "motif_siger"].includes(m.id)
             ).map((motif) => (
               <Link
                 key={motif.id}
                 href={`/education/${motif.slug}`}
-                className="group bg-white rounded-3xl p-4 shadow-[var(--shadow-ethereal)] hover:shadow-[var(--shadow-ethereal-hover)] border border-sogan-200/80 transition-all duration-300 flex flex-col hover:-translate-y-1.5"
+                className="group bg-white rounded-3xl p-4 shadow-lg shadow-[#6B4C3A]/5 hover:shadow-xl border border-sogan-200/80 transition-all duration-300 flex flex-col hover:-translate-y-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D2AA36]"
               >
-                <div className="relative h-60 w-full rounded-[24px] overflow-hidden bg-sogan-100 mb-4">
+                <div className="relative h-60 w-full rounded-2xl overflow-hidden bg-sogan-100 mb-4">
                   <Image
                     src={motif.imageUrl}
-                    alt={`Motif batik ${motif.name}`}
+                    alt={`Motif Tapis ${motif.name}`}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -315,7 +315,7 @@ export default function HomePage() {
                     <h3 className="font-serif font-bold text-sogan-900 text-lg mb-2 group-hover:text-emas-600 transition-colors">
                       {motif.name}
                     </h3>
-                    <p className="text-sogan-500 text-xs sm:text-sm leading-relaxed line-clamp-3 mb-4">
+                    <p className="text-gray-700 text-xs sm:text-sm leading-relaxed line-clamp-3 mb-4 font-sans">
                       {motif.philosophy}
                     </p>
                   </div>
@@ -339,9 +339,13 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── LOOKBOOK CAROUSEL (design.md 5.4) ───────────────────────── */}
+        {/* ── LOOKBOOK CAROUSEL (Inspirasi Padu Padan Tapis Lampung) ───────────────────────── */}
         <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-28">
-          <OutfitCarousel outfits={OUTFIT_DATA} />
+          <OutfitCarousel
+            outfits={OUTFIT_DATA}
+            title="Inspirasi Padu Padan Tapis Lampung"
+            subtitle="Gaya busana modern berbalut kehangatan tenun Tapis benang emas dan perak untuk berbagai suasana."
+          />
         </section>
 
         {/* ── EDITORIAL CULTURAL BANNER ─────────────────────────────── */}

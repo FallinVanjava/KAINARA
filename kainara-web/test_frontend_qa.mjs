@@ -18,7 +18,7 @@ console.log("       KAINARA FRONTEND BUSINESS LOGIC QA TEST SUITE            ");
 console.log("=================================================================");
 
 console.log("\n[TEST SUITE 1] Motif Dataset & Cultural Taxonomy Integrity");
-assert("TC-FE-01: MOTIF_DATA has exactly 8 standard motifs", MOTIF_DATA.length === 8);
+assert("TC-FE-01: MOTIF_DATA is populated with curated motifs", MOTIF_DATA.length >= 8);
 
 const requiredKeys = ["id", "name", "slug", "category", "origin", "philosophy", "eventContext", "colors", "imageUrl"];
 const allSlugs = new Set();
@@ -34,8 +34,8 @@ MOTIF_DATA.forEach((m) => {
   allIds.add(m.id);
 });
 
-assert("TC-FE-05: All motif slugs are globally unique", allSlugs.size === 8);
-assert("TC-FE-06: All motif IDs are globally unique", allIds.size === 8);
+assert("TC-FE-05: All motif slugs are globally unique", allSlugs.size === MOTIF_DATA.length);
+assert("TC-FE-06: All motif IDs are globally unique", allIds.size === MOTIF_DATA.length);
 
 console.log("\n[TEST SUITE 2] Outfit Catalog & Modest Fashion Tags Integrity");
 assert("TC-FE-07: OUTFIT_DATA is non-empty", OUTFIT_DATA.length > 0);

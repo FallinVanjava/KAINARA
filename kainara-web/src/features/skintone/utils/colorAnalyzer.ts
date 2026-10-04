@@ -9,14 +9,13 @@ function generateRecommendation(tone: "warm" | "cool" | "neutral"): SkinToneResu
       palette: ["#6D0F0F", "#D2AA36", "#1C1B19", "#F7E2C3"],
       recommendedMotifs: MOTIF_DATA.filter(
         (m) =>
+          m.id === "tapis_pucuk_rebung" ||
+          m.id === "tapis_bintang_perak" ||
           m.id === "motif_siger" ||
-          m.id === "motif_pucuk_rebung" ||
-          m.id === "motif_sembagi" ||
-          m.id === "motif_gajah" ||
-          m.id === "motif_gamolan"
+          m.id === "motif_sembagi"
       ).slice(0, 4),
       recommendations: OUTFIT_DATA.filter((o) =>
-        o.tags.includes("earth-tone") || o.motifId === "motif_siger" || o.motifId === "motif_sembagi" || o.motifId === "motif_gajah" || o.motifId === "motif_gamolan"
+        o.tags.includes("earth-tone") || o.motifId === "tapis_pucuk_rebung" || o.motifId === "motif_siger"
       ).slice(0, 4),
     };
   }
@@ -27,12 +26,12 @@ function generateRecommendation(tone: "warm" | "cool" | "neutral"): SkinToneResu
       palette: ["#2C3E6B", "#D9D9D9", "#EDE3DA", "#1C1B19"],
       recommendedMotifs: MOTIF_DATA.filter(
         (m) =>
+          m.id === "tapis_bintang_perak" ||
           m.id === "motif_kapal" ||
-          m.id === "motif_belah_ketupat" ||
-          m.id === "motif_bunga_ashar"
+          m.id === "motif_belah_ketupat"
       ).slice(0, 4),
       recommendations: OUTFIT_DATA.filter((o) =>
-        o.tags.includes("monokrom") || o.motifId === "motif_kapal" || o.motifId === "motif_belah_ketupat" || o.tags.includes("floral")
+        o.tags.includes("monokrom") || o.motifId === "tapis_bintang_perak" || o.tags.includes("bintang-perak")
       ).slice(0, 4),
     };
   }
