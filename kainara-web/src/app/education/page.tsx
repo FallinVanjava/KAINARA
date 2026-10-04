@@ -60,7 +60,7 @@ export default function EducationPage() {
   const showOutfits = activeTab === "favorit" && (favFilter === "semua" || favFilter === "outfit");
 
   return (
-    <main className="flex-1 w-full bg-[#FAF9F6] pt-28 sm:pt-36 pb-20 sm:pb-28">
+    <main className="flex-1 w-full bg-[#EDE3DA] pt-28 sm:pt-36 pb-20 sm:pb-28">
       {/* ── HEADER EDUKASI & TAB SWITCHER ─────────────────────────── */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10">
         <motion.span

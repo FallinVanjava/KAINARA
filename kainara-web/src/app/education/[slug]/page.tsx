@@ -38,7 +38,7 @@ export default async function MotifDetailPage({
   }
 
   return (
-    <main className="flex-1 w-full bg-[#FAF9F6] pb-24">
+    <main className="flex-1 w-full bg-[#EDE3DA] pb-24">
       {/* ── HERO BACKDROP WITH EDITORIAL IMAGE ──────────────────────── */}
       <section className="relative w-full h-[55vh] sm:h-[65vh] bg-sogan-950 overflow-hidden">
         <Image

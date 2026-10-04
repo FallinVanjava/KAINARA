@@ -18,7 +18,14 @@ import torch.nn.functional as F
 from torchvision import models, transforms
 from PIL import Image
 
-app = FastAPI(title="KAINARA AI Backend", version="2.1.0")
+# ONNX Runtime (Optional for production inference)
+try:
+    import onnxruntime as ort
+    HAS_ONNX = True
+except ImportError:
+    HAS_ONNX = False
+
+app = FastAPI(title="KAINARA AI Backend", version="2.2.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -29,42 +36,34 @@ app.add_middleware(
 )
 
 BASE_DIR = Path(__file__).resolve().parent
-DATASET_DIR = (BASE_DIR / "dataset_raw") if (BASE_DIR / "dataset_raw").exists() else (BASE_DIR / "dataset")
+DATASET_DIR = (BASE_DIR / "dataset_tapis") if (BASE_DIR / "dataset_tapis").exists() else ((BASE_DIR / "dataset_raw") if (BASE_DIR / "dataset_raw").exists() else (BASE_DIR / "dataset"))
 ORIGINAL_DIR = DATASET_DIR
 HARD_NEGATIVES_DIR = BASE_DIR / "dataset" / "hard_negatives"
 UNLABELED_DIR = BASE_DIR / "dataset" / "unlabeled"
+MODELS_DIR = BASE_DIR / "models"
 
 MODEL_WEIGHTS_PATH = BASE_DIR / "best_model_weights.pth"
 SKINTONE_WEIGHTS_PATH = BASE_DIR / "skintone_mobilenet_v2.pth"
+ONNX_BATIK_PATH = MODELS_DIR / "tapis_resnet50.onnx"
+ONNX_SKIN_PATH = MODELS_DIR / "skintone_mobilenet.onnx"
 
+MAX_UPLOAD_SIZE = 2 * 1024 * 1024  # 2MB
 MINIMUM_CONFIDENCE = 0.30
 
-# === CONFIG BATIK SCANNER (8 Motif Wastra Lampung) ===
+# === CONFIG TAPIS SCANNER (Fokus Wastra Tapis Lampung) ===
 CLASS_NAMES = [
-    "motif_belah_ketupat",
-    "motif_bunga_ashar",
-    "motif_gajah",
-    "motif_gamolan",
-    "motif_kapal",
-    "motif_pucuk_rebung",
-    "motif_sembagi",
-    "motif_siger",
+    "tapis_bintang_perak",
+    "tapis_pucuk_rebung",
 ]
 
-# HARDCODED PHILOSOPHY (Berdasarkan mockData.ts Frontend)
+# HARDCODED PHILOSOPHY TAPIS LAMPUNG
 MOTIF_PHILOSOPHY = {
-    "motif_belah_ketupat": "Ragam geometris belah ketupat melambangkan empat pilar kehidupan masyarakat adat Lampung, yaitu keselarasan mikrokosmos dan makrokosmos, kesucian batin, serta keseimbangan moral dalam setiap musyawarah adat.",
-    "motif_bunga_ashar": "Terinspirasi dari flora kembang asar (bunga pukul empat) yang senantiasa mekar menjelang sore. Menjadi simbol kedisiplinan hidup, pengingat waktu ibadah, serta keanggunan dan kehalusan budi pekerti kaum wanita Lampung.",
-    "motif_gajah": "Gajah merupakan fauna ikonik bumi Ruwa Jurai yang merepresentasikan kekuatan jiwa, kebijaksanaan seorang pemimpin, loyalitas keluarga, serta tanggung jawab mulia menjaga kelestarian alam lingkungan.",
-    "motif_gamolan": "Mengabadikan instrumen gamolan bambu purba Lampung ke dalam pola kain tenun. Melambangkan keharmonisan hubungan sosial antar-warga, kekayaan musikal leluhur, dan kegembiraan perayaan kebudayaan.",
-    "motif_kapal": "Kapal melambangkan bahtera transisi siklus kehidupan manusia, mulai dari kelahiran, kedewasaan, pernikahan, hingga akhir hayat, serta simbol persatuan antarsuku masyarakat pesisir Lampung.",
-    "motif_pucuk_rebung": "Susunan segitiga berderet dari tunas bambu melambangkan kekuatan menghadapi rintangan hidup, pertumbuhan budi pekerti yang kokoh dari generasi ke generasi, dan tatanan hirarki kepemimpinan adat yang luhur.",
-    "motif_sembagi": "Perpaduan kearifan wastra lokal dengan pengaruh perdagangan rempah nusantara. Menyimbolkan kemakmuran, derajat martabat keluarga terpandang, dan keagungan busana kebesaran para tetua adat.",
-    "motif_siger": "Mahkota emas sembilan lekuk kehormatan wanita Lampung. Melambangkan kepemimpinan sembilan marga besar (Abung Siwo Mego), martabat luhur kaum ibu, serta simbol identitas tertinggi tanah Lampung."
+    "tapis_bintang_perak": "Pola bintang perak bersulam benang perak dan emas melambangkan kemilau harapan, kejayaan leluhur maritim, serta ketinggian derajat budi pekerti wanita Lampung dalam upacara adat agung.",
+    "tapis_pucuk_rebung": "Susunan segitiga berderet dari tunas bambu melambangkan kekuatan menghadapi rintangan hidup, pertumbuhan budi pekerti yang kokoh dari generasi ke generasi, dan tatanan hirarki kepemimpinan adat yang luhur.",
 }
 
 def get_motif_philosophy(motif_id: str) -> str:
-    return MOTIF_PHILOSOPHY.get(motif_id, "Filosofi motif tidak ditemukan.")
+    return MOTIF_PHILOSOPHY.get(motif_id, "Filosofi motif Tapis tidak ditemukan.")
 
 # === CONFIG SKIN TONE SCANNER ===
 SKIN_CLASS_NAMES = ["cool", "neutral", "warm"]
@@ -72,44 +71,64 @@ SKIN_CLASS_NAMES = ["cool", "neutral", "warm"]
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"[INIT] Memuat AI Models menggunakan device: {device}")
 
-def create_batik_head(num_classes: int = len(CLASS_NAMES)):
+def create_tapis_head(num_classes: int = len(CLASS_NAMES)):
     return torch.nn.Sequential(
-        torch.nn.Linear(2048, 512),
-        torch.nn.BatchNorm1d(512),
+        torch.nn.Linear(2048, 256),
+        torch.nn.BatchNorm1d(256),
         torch.nn.GELU(),
         torch.nn.Dropout(p=0.3),
-        torch.nn.Linear(512, 128),
-        torch.nn.BatchNorm1d(128),
+        torch.nn.Linear(256, 64),
+        torch.nn.BatchNorm1d(64),
         torch.nn.GELU(),
         torch.nn.Dropout(p=0.15),
-        torch.nn.Linear(128, num_classes),
+        torch.nn.Linear(64, num_classes),
     )
 
-# 1. INIT BATIK MODEL
+# 1. INIT TAPIS MODEL (PyTorch & ONNX support)
 model_batik = models.resnet50(weights=None)
-model_batik.fc = create_batik_head()
+model_batik.fc = create_tapis_head()
 HAS_TRAINED_BATIK = False
-try:
-    model_batik.load_state_dict(torch.load(MODEL_WEIGHTS_PATH, map_location=device))
-    HAS_TRAINED_BATIK = True
-    print(f"[INIT] Batik Model (ResNet50 Production Head) DIMUAT dari {MODEL_WEIGHTS_PATH.name}.")
-except Exception as e:
-    print(f"[INIT] Peringatan: Gagal memuat bobot model ({e}). Menggunakan Fallback Mock.")
-model_batik.to(device)
-model_batik.eval()
+onnx_batik_session = None
 
-# 2. INIT SKIN TONE MODEL
+if HAS_ONNX and ONNX_BATIK_PATH.exists():
+    try:
+        onnx_batik_session = ort.InferenceSession(str(ONNX_BATIK_PATH), providers=["CPUExecutionProvider"])
+        print(f"[INIT] Tapis ONNX Model DIMUAT dari {ONNX_BATIK_PATH.name}.")
+    except Exception as e:
+        print(f"[INIT] Peringatan: Gagal memuat ONNX Tapis ({e}).")
+
+if onnx_batik_session is None:
+    try:
+        model_batik.load_state_dict(torch.load(MODEL_WEIGHTS_PATH, map_location=device))
+        HAS_TRAINED_BATIK = True
+        print(f"[INIT] Tapis Model (ResNet50 Production Head) DIMUAT dari {MODEL_WEIGHTS_PATH.name}.")
+    except Exception as e:
+        print(f"[INIT] Peringatan: Gagal memuat bobot model ({e}). Menggunakan Fallback Mock.")
+    model_batik.to(device)
+    model_batik.eval()
+
+# 2. INIT SKIN TONE MODEL (PyTorch & ONNX support)
 model_skin = models.mobilenet_v2(pretrained=False)
 model_skin.classifier[1] = torch.nn.Linear(model_skin.classifier[1].in_features, len(SKIN_CLASS_NAMES))
 HAS_TRAINED_SKIN = False
-try:
-    model_skin.load_state_dict(torch.load(SKINTONE_WEIGHTS_PATH, map_location=device))
-    HAS_TRAINED_SKIN = True
-    print(f"[INIT] Skin Tone Model (MobileNetV2) DIMUAT.")
-except FileNotFoundError:
-    print("[INIT] Peringatan: Skin Tone Model bobot tidak ditemukan. Menggunakan Fallback Mock.")
-model_skin.to(device)
-model_skin.eval()
+onnx_skin_session = None
+
+if HAS_ONNX and ONNX_SKIN_PATH.exists():
+    try:
+        onnx_skin_session = ort.InferenceSession(str(ONNX_SKIN_PATH), providers=["CPUExecutionProvider"])
+        print(f"[INIT] Skin Tone ONNX Model DIMUAT dari {ONNX_SKIN_PATH.name}.")
+    except Exception as e:
+        print(f"[INIT] Peringatan: Gagal memuat ONNX Skin Tone ({e}).")
+
+if onnx_skin_session is None:
+    try:
+        model_skin.load_state_dict(torch.load(SKINTONE_WEIGHTS_PATH, map_location=device))
+        HAS_TRAINED_SKIN = True
+        print(f"[INIT] Skin Tone Model (MobileNetV2) DIMUAT.")
+    except FileNotFoundError:
+        print("[INIT] Peringatan: Skin Tone Model bobot tidak ditemukan. Menggunakan Fallback Mock.")
+    model_skin.to(device)
+    model_skin.eval()
 
 # PREPROCESSING STANDARD
 preprocess_transform = transforms.Compose([
@@ -125,28 +144,36 @@ def simulate_inference_batik(filename: str) -> List[float]:
     probs = [random.uniform(0.01, 0.05) for _ in range(len(CLASS_NAMES))]
     filename_lower = filename.lower()
     
-    if "belah" in filename_lower or "ketupat" in filename_lower: probs[CLASS_NAMES.index("motif_belah_ketupat")] = 0.90
-    elif "ashar" in filename_lower or "bunga" in filename_lower: probs[CLASS_NAMES.index("motif_bunga_ashar")] = 0.88
-    elif "gajah" in filename_lower or "kambas" in filename_lower: probs[CLASS_NAMES.index("motif_gajah")] = 0.92
-    elif "gamolan" in filename_lower: probs[CLASS_NAMES.index("motif_gamolan")] = 0.89
-    elif "kapal" in filename_lower or "palepai" in filename_lower or "tampan" in filename_lower: probs[CLASS_NAMES.index("motif_kapal")] = 0.91
-    elif "pucuk" in filename_lower or "rebung" in filename_lower or "tumpal" in filename_lower: probs[CLASS_NAMES.index("motif_pucuk_rebung")] = 0.89
-    elif "sembagi" in filename_lower: probs[CLASS_NAMES.index("motif_sembagi")] = 0.93
-    elif "siger" in filename_lower: probs[CLASS_NAMES.index("motif_siger")] = 0.94
-    elif "blur" in filename_lower or "bukanbatik" in filename_lower:
-        idx = random.randint(0, len(CLASS_NAMES)-1)
-        probs[idx] = 0.25
+    if "pucuk" in filename_lower or "rebung" in filename_lower or "tumpal" in filename_lower:
+        probs[CLASS_NAMES.index("tapis_pucuk_rebung")] = 0.92
+    elif "bintang" in filename_lower or "perak" in filename_lower or "star" in filename_lower:
+        probs[CLASS_NAMES.index("tapis_bintang_perak")] = 0.94
+    elif "blur" in filename_lower or "bukantapis" in filename_lower:
+        probs = [0.20, 0.20]
     else:
-        seed = random.choice([CLASS_NAMES.index("motif_siger"), CLASS_NAMES.index("motif_gajah")])
-        probs[seed] = random.uniform(0.76, 0.95)
+        seed = random.choice([0, 1])
+        probs[seed] = random.uniform(0.80, 0.96)
     return [p / sum(probs) for p in probs]
 
 @app.post("/v1/scan")
 async def scan_batik(image: UploadFile = File(...)):
-    if not image.content_type.startswith("image/"): return JSONResponse(status_code=422, content={"success": False, "code": "INVALID_FORMAT", "message": "File harus berupa gambar."})
+    if not image.content_type or not image.content_type.startswith("image/"):
+        return JSONResponse(status_code=400, content={"success": False, "code": "INVALID_FORMAT", "message": "File harus berupa gambar."})
+    
+    file_bytes = await image.read()
+    if len(file_bytes) > MAX_UPLOAD_SIZE:
+        return JSONResponse(status_code=413, content={"success": False, "code": "PAYLOAD_TOO_LARGE", "message": "Ukuran file melebihi batas 2MB."})
+
     try:
-        file_bytes = await image.read()
-        if HAS_TRAINED_BATIK:
+        if onnx_batik_session is not None:
+            # Single-pass fast inference via ONNX
+            img = Image.open(io.BytesIO(file_bytes)).convert("RGB")
+            input_tensor = preprocess_transform(img).unsqueeze(0).numpy()
+            ort_inputs = {onnx_batik_session.get_inputs()[0].name: input_tensor}
+            ort_outs = onnx_batik_session.run(None, ort_inputs)
+            logits = torch.from_numpy(ort_outs[0])
+            probs = F.softmax(logits, dim=1).squeeze().tolist()
+        elif HAS_TRAINED_BATIK:
             img = Image.open(io.BytesIO(file_bytes)).convert("RGB")
             
             # Test-Time Augmentation (TTA): 3-view averaging for maximum accuracy
@@ -165,7 +192,8 @@ async def scan_batik(image: UploadFile = File(...)):
         else:
             probs = simulate_inference_batik(image.filename)
     except Exception as e:
-        return JSONResponse(status_code=500, content={"success": False, "code": "INFERENCE_ERROR", "message": str(e)})
+        print(f"[ERROR] Inference scan_batik: {e}")
+        return JSONResponse(status_code=500, content={"success": False, "code": "INFERENCE_ERROR", "message": "Inference engine failure."})
     
     results_scored = [(CLASS_NAMES[i], p, i) for i, p in enumerate(probs)]
     results_scored.sort(key=lambda x: x[1], reverse=True)
@@ -196,10 +224,22 @@ def simulate_inference_skin() -> List[float]:
 
 @app.post("/v1/skintone")
 async def scan_skintone(image: UploadFile = File(...)):
-    if not image.content_type.startswith("image/"): return JSONResponse(status_code=422, content={"success": False, "code": "INVALID_FORMAT", "message": "File harus berupa gambar."})
+    if not image.content_type or not image.content_type.startswith("image/"):
+        return JSONResponse(status_code=400, content={"success": False, "code": "INVALID_FORMAT", "message": "File harus berupa gambar."})
+    
+    file_bytes = await image.read()
+    if len(file_bytes) > MAX_UPLOAD_SIZE:
+        return JSONResponse(status_code=413, content={"success": False, "code": "PAYLOAD_TOO_LARGE", "message": "Ukuran file melebihi batas 2MB."})
+
     try:
-        file_bytes = await image.read()
-        if HAS_TRAINED_SKIN:
+        if onnx_skin_session is not None:
+            img = Image.open(io.BytesIO(file_bytes)).convert("RGB")
+            input_tensor = preprocess_transform(img).unsqueeze(0).numpy()
+            ort_inputs = {onnx_skin_session.get_inputs()[0].name: input_tensor}
+            ort_outs = onnx_skin_session.run(None, ort_inputs)
+            logits = torch.from_numpy(ort_outs[0])
+            probs = F.softmax(logits, dim=1).squeeze().tolist()
+        elif HAS_TRAINED_SKIN:
             img = Image.open(io.BytesIO(file_bytes)).convert("RGB")
             input_tensor = preprocess_transform(img).unsqueeze(0).to(device)
             with torch.no_grad():
@@ -208,7 +248,8 @@ async def scan_skintone(image: UploadFile = File(...)):
         else:
             probs = simulate_inference_skin()
     except Exception as e:
-        return JSONResponse(status_code=500, content={"success": False, "code": "INFERENCE_ERROR", "message": str(e)})
+        print(f"[ERROR] Inference scan_skintone: {e}")
+        return JSONResponse(status_code=500, content={"success": False, "code": "INFERENCE_ERROR", "message": "Inference engine failure."})
     
     results_scored = [(SKIN_CLASS_NAMES[i], p) for i, p in enumerate(probs)]
     results_scored.sort(key=lambda x: x[1], reverse=True)

@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState, useCallback } from "react";
-import { motion } from "framer-motion";
 import Cropper from "react-easy-crop";
 import { Button } from "@/components/ui/Button";
 import type { ScannerStatus } from "@/types";
@@ -140,33 +139,20 @@ export function WebScannerUI({ onCapture, status }: WebScannerUIProps) {
           alt="Proses pemindaian wastra"
         />
 
-        {/* HUD Viewfinder Corners */}
-        <div className="absolute inset-6 border border-white/20 rounded-[24px] pointer-events-none" />
-        <div className="absolute top-6 left-6 size-6 border-t-2 border-l-2 border-emas rounded-tl-lg pointer-events-none" />
-        <div className="absolute top-6 right-6 size-6 border-t-2 border-r-2 border-emas rounded-tr-lg pointer-events-none" />
-        <div className="absolute bottom-6 left-6 size-6 border-b-2 border-l-2 border-emas rounded-bl-lg pointer-events-none" />
-        <div className="absolute bottom-6 right-6 size-6 border-b-2 border-r-2 border-emas rounded-br-lg pointer-events-none" />
+        {/* HUD Viewfinder Central Crop Box (design_kainara_v3.md) */}
+        <div className="absolute inset-8 border-2 border-white/50 rounded-2xl pointer-events-none" />
 
         {isScanning && (
           <>
-            {/* Siger Gold Laser Scanning Beam (design.md 5.2) */}
-            <motion.div
-              className="absolute left-6 right-6 h-1 bg-gradient-to-r from-transparent via-emas to-transparent shadow-[0_0_24px_rgba(212,175,55,1)]"
-              animate={{ top: ["8%", "90%", "8%"] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-            />
+            {/* CSS Keyframe Laser Scanning Line (design_kainara_v3.md) */}
+            <div className="absolute left-8 right-8 h-0.5 bg-gradient-to-r from-transparent via-emas to-transparent shadow-[0_0_18px_rgba(210,170,54,1)] animate-scanline pointer-events-none z-10" />
 
             <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                className="size-14 rounded-full border-3 border-emas/20 border-t-emas mb-4"
-              />
-              <p className="text-emas-300 font-serif text-lg font-bold tracking-wide">
-                Menganalisis Pola Kain...
-              </p>
-              <p className="text-sogan-300 text-xs mt-1">
-                Mengekstraksi fitur visual dengan arsitektur CNN ResNet50
+              <span className="inline-block px-4 py-1.5 rounded-full bg-sogan-900/80 backdrop-blur-md border border-emas/40 text-emas font-serif text-sm font-bold tracking-wide shadow-lg">
+                Memproses...
+              </span>
+              <p className="text-sogan-300 text-xs mt-2">
+                Mengidentifikasi motif Tapis Lampung via AI Vision
               </p>
             </div>
           </>

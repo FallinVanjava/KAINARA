@@ -62,7 +62,9 @@ Thumbs.db
 .temp_crawl/
 dataset_raw/
 backend/dataset_raw/
+backend/dataset_tapis/
 backend/dataset/original/
 backend/dataset/skintone/
 backend/dataset/hard_negatives/
+*.pt
 *.log

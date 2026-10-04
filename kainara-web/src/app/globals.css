@@ -1,48 +1,56 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Earthy & Ethereal Palette (design.md) ─────────────────── */
-  --color-ivory:          #FAF9F6;
-  --color-ivory-warm:     #F4EFEA;
-  --color-ivory-dark:     #ECE5DD;
+  /* ── KAINARA Color Tokens (design_kainara_v3.md) ───────────────── */
+  --color-kainara-base:       #EDE3DA;
+  --color-kainara-surface:    #F7E2C3;
+  --color-kainara-neutral:    #D9D9D9;
+  --color-kainara-primary:    #1C1B19;
+  --color-kainara-accent:     #D2AA36;
+  --color-kainara-merah:      #6D0F0F;
 
-  --color-sogan:          #6B4C3A;
-  --color-sogan-50:       #FAF6F2;
-  --color-sogan-100:      #F3ECE5;
-  --color-sogan-200:      #E4D4C7;
-  --color-sogan-300:      #C8AE9A;
-  --color-sogan-400:      #9F7B62;
-  --color-sogan-500:      #6B4C3A;
-  --color-sogan-600:      #573D2E;
-  --color-sogan-700:      #432E22;
-  --color-sogan-800:      #2F2018;
-  --color-sogan-900:      #1C130E;
+  --color-ivory:              #EDE3DA;
+  --color-ivory-warm:         #F7E2C3;
+  --color-ivory-dark:         #D9D9D9;
 
-  --color-emas:           #D4AF37;
-  --color-emas-light:     #F3E3A2;
-  --color-emas-dark:      #A8861B;
-  --color-emas-300:       #F0D679;
-  --color-emas-400:       #E1C355;
-  --color-emas-500:       #D4AF37;
-  --color-emas-600:       #B89222;
+  --color-sogan:              #1C1B19;
+  --color-sogan-50:           #F7F3EF;
+  --color-sogan-100:          #EDE3DA;
+  --color-sogan-200:          #D9D9D9;
+  --color-sogan-300:          #A8A29E;
+  --color-sogan-400:          #6E6A65;
+  --color-sogan-500:          #44403C;
+  --color-sogan-600:          #35312D;
+  --color-sogan-700:          #292524;
+  --color-sogan-800:          #1C1B19;
+  --color-sogan-900:          #0F0E0D;
 
-  --color-batik-indigo:   #2C3E6B;
-  --color-batik-merah:    #8B2020;
+  --color-emas:               #D2AA36;
+  --color-emas-light:         #F0DFA0;
+  --color-emas-dark:          #A6841A;
+  --color-emas-300:           #E6CE6A;
+  --color-emas-400:           #DCBC4E;
+  --color-emas-500:           #D2AA36;
+  --color-emas-600:           #B89222;
+  --color-emas-700:           #A6841A;
 
-  /* ── Typography ─────────────────────────────────────────── */
+  --color-batik-indigo:       #2C3E6B;
+  --color-batik-merah:        #6D0F0F;
+
+  /* ── Typography (design_kainara_v3.md) ───────────────────────── */
   --font-sans:   var(--font-sans), system-ui, sans-serif;
   --font-serif:  var(--font-serif), Georgia, serif;
 
-  /* ── Border Radius (design.md) ─────────────────────────── */
+  /* ── Border Radius ───────────────────────────────────────────── */
   --radius-bento: 24px;
   --radius-img:   24px;
   --radius-pill:  9999px;
 
-  /* ── Shadows (design.md) ────────────────────────────────── */
-  --shadow-ethereal: 0 10px 40px rgba(107, 76, 58, 0.08);
-  --shadow-ethereal-hover: 0 18px 50px rgba(107, 76, 58, 0.14);
-  --shadow-card:     0 10px 40px rgba(107, 76, 58, 0.08);
-  --shadow-gold:     0 6px 28px rgba(212, 175, 55, 0.35);
+  /* ── Performance-Optimized Shadows (design_kainara_v3.md) ────── */
+  --shadow-ethereal: 0 10px 30px rgba(107, 76, 58, 0.05);
+  --shadow-ethereal-hover: 0 14px 40px rgba(107, 76, 58, 0.08);
+  --shadow-card:     0 8px 24px rgba(107, 76, 58, 0.04);
+  --shadow-gold:     0 4px 20px rgba(210, 170, 54, 0.3);
 }
 
 /* ── Base reset / global styles ────────────────────────────── */
@@ -57,18 +65,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Scrollbar – refined editorial style */
+/* Scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(107, 76, 58, 0.25) transparent;
+  scrollbar-color: rgba(28, 27, 25, 0.25) transparent;
 }
 
-/* Glassmorphism Surface Utility */
+/* Glassmorphism Surface Utility (design_kainara_v3.md) */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(107, 76, 58, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Batik pattern divider utility */

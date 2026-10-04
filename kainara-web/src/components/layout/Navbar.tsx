@@ -16,15 +16,15 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="fixed top-3 sm:top-5 inset-x-0 z-50 max-w-5xl mx-auto px-3 sm:px-6">
+    <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl">
       <nav
-        className="glass-panel rounded-full px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-[var(--shadow-ethereal)] transition-all duration-300"
+        className="bg-white/70 backdrop-blur-md border border-white/20 rounded-full px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-[var(--shadow-ethereal)] transition-all duration-300"
         aria-label="Navigasi Utama KAINARA"
       >
         {/* Brand Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 group focus-visible:outline-2 focus-visible:outline-emas-500 rounded-full px-2 py-1"
+          className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D2AA36] rounded-full px-2 py-1"
           aria-label="KAINARA Beranda"
         >
           <span className="font-serif text-xl sm:text-2xl font-bold tracking-wider text-sogan-800 group-hover:text-emas-600 transition-colors">
@@ -57,7 +57,7 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <Link
             href="/scanner"
-            className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-emas text-sogan-900 text-xs font-bold tracking-wide hover:bg-emas-400 transition-colors shadow-[0_2px_14px_rgba(212,175,55,0.3)]"
+            className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-emas text-sogan-900 text-xs font-bold tracking-wide hover:bg-emas-400 transition-colors shadow-[var(--shadow-gold)] focus-visible:ring-2 focus-visible:ring-[#D2AA36]"
           >
             <svg
               aria-hidden="true"
@@ -78,7 +78,7 @@ export function Navbar() {
                 d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
               />
             </svg>
-            Scan Wastra
+            Scan Tapis
           </Link>
 
           <button
@@ -86,7 +86,7 @@ export function Navbar() {
             aria-label={open ? "Tutup menu navigasi" : "Buka menu navigasi"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="md:hidden p-2 rounded-full text-sogan-700 hover:bg-sogan-100 transition-colors focus-visible:outline-2 focus-visible:outline-emas-500"
+            className="md:hidden p-2 rounded-full text-sogan-700 hover:bg-sogan-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D2AA36]"
           >
             <span className="sr-only">{open ? "Tutup" : "Menu"}</span>
             <svg
@@ -116,7 +116,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden mt-2 p-4 rounded-[24px] glass-panel shadow-[var(--shadow-ethereal)]"
+            className="md:hidden mt-2 p-4 rounded-3xl bg-white/80 backdrop-blur-md border border-white/30 shadow-[var(--shadow-ethereal)]"
           >
             <ul className="flex flex-col gap-1.5">
               {navLinks.map((l) => {

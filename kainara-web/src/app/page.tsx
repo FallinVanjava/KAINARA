@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/Badge";
 export const metadata: Metadata = {
   title: "Beranda | KAINARA Digital Fashion Editorial",
   description:
-    "Eksplorasi keagungan Batik & Tapis Lampung melalui kurasi editorial modern, AI Scanner motif, dan rekomendasi skin tone.",
+    "Eksplorasi keagungan Wastra & Tapis Lampung melalui kurasi editorial modern, AI Scanner motif, dan rekomendasi skin tone.",
 };
 
 export default function HomePage() {
@@ -18,9 +18,9 @@ export default function HomePage() {
     <>
       <Navbar />
       <main className="flex-1 w-full overflow-hidden">
-        {/* ── HERO SECTION (Editorial Fashion Aesthetic) ──────────────── */}
+        {/* ── HERO SECTION (Editorial Fashion Aesthetic - design_kainara_v3.md) ──────────────── */}
         <section
-          className="relative pt-32 sm:pt-40 pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center"
+          className="relative pt-32 sm:pt-40 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center"
           aria-label="Hero KAINARA"
         >
           {/* Subtle Ambient Warm Glow */}
@@ -31,20 +31,20 @@ export default function HomePage() {
 
           <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
             <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold text-sogan-900 tracking-tight leading-[1.12] mb-6">
-              Menyelami <span className="italic font-normal text-sogan-700">Keanggunan Wastra</span>, Merawat Jiwa Nusantara.
+              Menyelami <span className="italic font-normal text-sogan-700">Wastra Tapis Lampung</span>, Merawat Jiwa Nusantara.
             </h1>
 
             {/* Editorial Subtitle */}
-            <p className="text-sogan-600 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed mb-10 font-normal">
-              Platform modern yang mempertemukan keagungan filosofi Batik Lampung
-              dengan teknologi kecerdasan buatan untuk generasi masa kini.
+            <p className="text-gray-700 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed mb-8 font-sans font-normal">
+              Platform editorial modern yang mempertemukan filosofi sakral Tapis Lampung
+              dengan teknologi kecerdasan buatan untuk personalisasi gaya busana masa kini.
             </p>
 
             {/* Pill CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3.5 sm:gap-4 justify-center items-center w-full max-w-md">
+            <div className="flex flex-col sm:flex-row gap-3.5 sm:gap-4 justify-center items-center w-full max-w-md mb-12">
               <Link
                 href="/scanner"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-emas text-sogan-900 text-sm sm:text-base font-bold tracking-wide hover:bg-emas-400 transition-all duration-200 shadow-[var(--shadow-gold)] active:scale-98"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-emas text-sogan-900 text-sm sm:text-base font-bold tracking-wide hover:bg-emas-400 transition-all duration-200 shadow-[var(--shadow-gold)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D2AA36] focus-visible:ring-offset-2 active:scale-98"
               >
                 <svg
                   aria-hidden="true"
@@ -65,25 +65,47 @@ export default function HomePage() {
                     d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
                   />
                 </svg>
-                Scan Wastra Sekarang
+                Scan Tapis Sekarang
               </Link>
               <Link
                 href="/education"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-full border border-sogan-400/80 text-sogan-800 text-sm sm:text-base font-semibold hover:bg-sogan-100/70 transition-all duration-200"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-full border border-sogan-400/80 text-sogan-800 text-sm sm:text-base font-semibold hover:bg-sogan-100/70 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D2AA36] focus-visible:ring-offset-2"
               >
                 Eksplorasi Motif
               </Link>
             </div>
+
+            {/* Hero Floating Tapis Visual (Animasi naik-turun max Y 20px) */}
+            <div className="relative w-full max-w-2xl h-56 sm:h-72 rounded-3xl overflow-hidden shadow-lg shadow-[#6B4C3A]/5 border border-white/40 group">
+              <Image
+                src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=1000&q=80&fit=crop"
+                alt="Wastra Tapis Lampung Keemasan"
+                fill
+                priority
+                className="object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-sogan-950/70 via-sogan-950/20 to-transparent flex items-end justify-between p-6">
+                <div className="text-left">
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-emas block mb-1">
+                    Warisan Tenun Benang Emas
+                  </span>
+                  <p className="font-serif text-white text-lg sm:text-xl font-bold">
+                    Tapis Lampung &amp; Ragam Filosofi
+                  </p>
+                </div>
+                <Badge variant="gold">Lampung Heritage</Badge>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* ── BENTO GRID SECTION (design.md 5.1) ─────────────────────── */}
+        {/* ── BENTO GRID SECTION (design_kainara_v3.md) ─────────────────────── */}
         <section
           className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16"
           aria-label="Fitur Utama KAINARA"
         >
           <div className="text-center mb-10">
-            <span className="text-xs font-bold uppercase tracking-widest text-emas-600 block mb-1">
+            <span className="text-xs font-bold uppercase tracking-widest text-emas block mb-1">
               Arsitektur Pengalaman
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl text-sogan-900 font-bold">
@@ -91,9 +113,9 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {/* Bento Box 1: Large Showcase Box (Span 2) */}
-            <div className="md:col-span-2 bg-sogan-900 text-ivory rounded-3xl p-7 sm:p-10 shadow-[var(--shadow-ethereal)] border border-sogan-700/60 relative overflow-hidden flex flex-col justify-between group">
+            <div className="md:col-span-2 bg-sogan-900 text-ivory rounded-3xl p-7 sm:p-10 shadow-lg shadow-[#6B4C3A]/5 border border-sogan-700/60 relative overflow-hidden flex flex-col justify-between group">
               <div
                 aria-hidden="true"
                 className="absolute top-0 right-0 w-80 h-80 bg-emas/15 rounded-full blur-3xl pointer-events-none"
@@ -107,12 +129,12 @@ export default function HomePage() {
                 </div>
 
                 <h3 className="font-serif text-2xl sm:text-4xl font-bold mb-3 text-ivory leading-snug">
-                  AI Scanner Motif Wastra
+                  AI Scanner Motif Tapis
                 </h3>
                 <p className="text-sogan-200 text-sm sm:text-base leading-relaxed max-w-xl mb-8">
-                  Pindai foto kain atau pakaian Anda. Algoritma visi komputer kami
-                  menganalisis struktur geometris dan benang emas untuk mengidentifikasi
-                  nama motif, asal daerah, serta filosofi sakralnya secara instan.
+                  Pindai foto kain atau busana Anda. Algoritma visi komputer kami
+                  menganalisis struktur geometris dan benang emas/perak untuk mengidentifikasi
+                  nama motif Tapis, filosofi sakral, dan etika penggunaannya secara instan.
                 </p>
               </div>
 
@@ -120,11 +142,11 @@ export default function HomePage() {
               <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-6 border-t border-sogan-700/60">
                 <div className="flex items-center gap-3 text-xs text-sogan-300">
                   <span className="size-2 rounded-full bg-emerald-400" />
-                  <span>Model ResNet50 terlatih dengan akurasi tinggi</span>
+                  <span>Model ResNet50 Vision Engine Terverifikasi</span>
                 </div>
                 <Link
                   href="/scanner"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-emas text-sogan-900 text-xs sm:text-sm font-bold hover:bg-emas-400 transition-colors shadow-[0_2px_14px_rgba(212,175,55,0.3)]"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-emas text-sogan-900 text-xs sm:text-sm font-bold hover:bg-emas-400 transition-colors shadow-[var(--shadow-gold)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D2AA36]"
                 >
                   Coba Scanner
                   <svg
@@ -146,7 +168,7 @@ export default function HomePage() {
             {/* Bento Box 2: Small Box 1 (Skin Tone Analysis) */}
             <Link
               href="/skintone"
-              className="group bg-white rounded-3xl p-7 sm:p-8 shadow-[var(--shadow-ethereal)] hover:shadow-[var(--shadow-ethereal-hover)] border border-sogan-200/80 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1"
+              className="group bg-white rounded-3xl p-7 sm:p-8 shadow-lg shadow-[#6B4C3A]/5 border border-sogan-200/80 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1"
             >
               <div>
                 <div className="size-12 rounded-full bg-emas/15 flex items-center justify-center text-emas-600 mb-6 group-hover:scale-110 transition-transform">
@@ -168,8 +190,8 @@ export default function HomePage() {
                 <h3 className="font-serif text-xl font-bold text-sogan-900 mb-2 group-hover:text-emas-600 transition-colors">
                   Skin Tone Analysis
                 </h3>
-                <p className="text-sogan-500 text-xs sm:text-sm leading-relaxed mb-6">
-                  Ekstraksi rona warna kulit untuk rekomendasi palet warna busana batik yang paling harmonis.
+                <p className="text-gray-700 text-xs sm:text-sm leading-relaxed mb-6 font-sans">
+                  Ekstraksi rona warna kulit untuk rekomendasi palet warna busana Tapis yang paling serasi.
                 </p>
               </div>
 
@@ -181,10 +203,10 @@ export default function HomePage() {
             {/* Bento Box 3: Small Box 2 (Edukasi Budaya & Filosofi) */}
             <Link
               href="/education"
-              className="group bg-white rounded-3xl p-7 sm:p-8 shadow-[var(--shadow-ethereal)] hover:shadow-[var(--shadow-ethereal-hover)] border border-sogan-200/80 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1"
+              className="group bg-white rounded-3xl p-7 sm:p-8 shadow-lg shadow-[#6B4C3A]/5 border border-sogan-200/80 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1"
             >
               <div>
-                <div className="size-12 rounded-full bg-batik-indigo/10 flex items-center justify-center text-batik-indigo mb-6 group-hover:scale-110 transition-transform">
+                <div className="size-12 rounded-full bg-batik-merah/10 flex items-center justify-center text-batik-merah mb-6 group-hover:scale-110 transition-transform">
                   <svg
                     aria-hidden="true"
                     viewBox="0 0 24 24"
@@ -201,34 +223,34 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <h3 className="font-serif text-xl font-bold text-sogan-900 mb-2 group-hover:text-emas-600 transition-colors">
-                  Katalog Filosofi
+                  Ensiklopedia Tapis
                 </h3>
-                <p className="text-sogan-500 text-xs sm:text-sm leading-relaxed mb-6">
-                  Jelajahi ensiklopedia motif tradisional Lampung, makna simbolis, dan cerita leluhur.
+                <p className="text-gray-700 text-xs sm:text-sm leading-relaxed mb-6 font-sans">
+                  Telusuri makna filosofis, sejarah leluhur, serta etika pemakaian ragam motif Tapis Lampung.
                 </p>
               </div>
 
               <span className="text-xs font-bold text-sogan-800 group-hover:text-emas-600 inline-flex items-center gap-1.5 pt-4 border-t border-sogan-100">
-                Buka Katalog
+                Jelajahi Warisan
               </span>
             </Link>
 
-            {/* Bento Box 4: Lookbook Preview Box (Span 2) */}
-            <div className="md:col-span-2 bg-sogan-100/70 rounded-3xl p-7 sm:p-8 border border-sogan-200/80 flex flex-col sm:flex-row items-center justify-between gap-6">
+            {/* Bento Box 4: Lookbook Preview Box (Span 3 on bottom) */}
+            <div className="md:col-span-3 bg-sogan-100/70 rounded-3xl p-7 sm:p-8 border border-sogan-200/80 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-lg shadow-[#6B4C3A]/5">
               <div className="flex-1">
                 <span className="text-xs font-bold uppercase tracking-widest text-emas-600 block mb-1">
                   Inspirasi Gaya
                 </span>
                 <h3 className="font-serif text-2xl font-bold text-sogan-900 mb-2">
-                  Koleksi Busana Modern Berbalut Wastra
+                  Koleksi Busana Modern Berbalut Wastra Tapis
                 </h3>
-                <p className="text-sogan-600 text-xs sm:text-sm leading-relaxed">
+                <p className="text-gray-700 text-xs sm:text-sm leading-relaxed font-sans">
                   Temukan inspirasi padu padan tenun tradisional untuk acara formal, kasual, hingga busana adat kontemporer.
                 </p>
               </div>
               <Link
                 href="/education"
-                className="flex-shrink-0 px-6 py-3 rounded-full bg-sogan-800 text-ivory text-xs sm:text-sm font-semibold hover:bg-sogan-900 transition-colors shadow-xs"
+                className="flex-shrink-0 px-6 py-3 rounded-full bg-sogan-800 text-ivory text-xs sm:text-sm font-semibold hover:bg-sogan-900 transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D2AA36]"
               >
                 Lihat Semua Koleksi
               </Link>

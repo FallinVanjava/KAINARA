@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const navItems = [
   { href: "/education", label: "Edukasi Motif" },
-  { href: "/scanner", label: "Scan Wastra AI" },
+  { href: "/scanner", label: "Scan Tapis AI" },
   { href: "/skintone", label: "Skin Tone Analysis" },
 ];
 
@@ -15,7 +15,7 @@ export function Footer() {
             KAINARA
           </p>
           <p className="text-sogan-300 leading-relaxed text-xs sm:text-sm">
-            Kenali Kain Nusantara: Ruang digital editorial untuk merayakan filosofi, kemewahan tenun, dan keagungan Batik Lampung.
+            Kenali Kain Nusantara: Ruang digital editorial untuk merayakan filosofi, kemewahan tenun, dan keagungan Tapis Lampung.
           </p>
         </div>
 
@@ -28,7 +28,7 @@ export function Footer() {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="text-sogan-200 hover:text-emas-300 transition-colors inline-block text-xs sm:text-sm"
+                  className="text-sogan-200 hover:text-emas-300 transition-colors inline-block text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D2AA36] rounded-md"
                 >
                   {item.label}
                 </Link>
@@ -42,7 +42,7 @@ export function Footer() {
             Filosofi Budaya
           </p>
           <p className="text-sogan-300 leading-relaxed text-xs sm:text-sm">
-            Menghubungkan generasi muda dengan akar warisan wastra tradisional melalui kurasi visual dan kecerdasan buatan.
+            Menghubungkan generasi muda dengan akar warisan wastra tradisional Tapis melalui kurasi visual dan kecerdasan buatan.
           </p>
         </div>
       </div>

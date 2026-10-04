@@ -22,3 +22,14 @@
 - [x] **State Atomik & Store Fix**: Memperbaiki `toggleFavoriteMotif` dan `toggleFavoriteOutfit` di `useFavoriteStore.ts` menjadi *single atomic state update* guna mencegah *race condition* dan duplikasi ID. Menambahkan action `clearAllFavorites`.
 - [x] **Interactive Favorite di Motif Card & Detail**: Menambahkan tombol *heart toggle* interaktif pada `MotifGridCard.tsx` dan `MotifDetailPage` (`education/[slug]`) sehingga pengguna dapat memfavoritkan atau menghapus motif dari mana saja.
 - [x] **Koleksi Favorit Terintegrasi (Motif + Outfit)**: Menambahkan sub-filter (Semua / Motif / Outfit) dan tombol "Kosongkan" di halaman `education/page.tsx`, sehingga seluruh item favorit ditampilkan secara akurat dan sinkron.
+
+## 5. Pelatihan Model ResNet50 & Penyesuaian Color Palette (Selesai)
+- [x] **Training ResNet50 v2 (Aggressive Augmentation)**: Melatih ulang model ResNet50 dengan pipeline 7-view augmentation (rotasi 180°, center crop 85%, random crop 80%, color jitter, gaussian blur) pada 8 kelas motif Lampung (4.627 total tensor). Akurasi validasi mencapai **99.24%** dengan akurasi per-kelas 98.4% - 100.0%. Uji inferensi mandiri menghasilkan confidence **92.6% - 99.5%** pada seluruh kelas. Bobot model tersimpan di `backend/best_model_weights.pth`.
+- [x] **Pembaruan Color Palette**: Mengintegrasikan palet warna baru (`#1C1B19`, `#6D0F0F`, `#D2AA36`, `#D9D9D9`, `#EDE3DA`, `#F7E2C3`) ke dalam Tailwind CSS tokens, `globals.css`, `mockData.ts`, `colorAnalyzer.ts`, dan `design.md` tanpa mengubah layout dan arsitektur UI yang ada.
+
+## 6. Sinkronisasi Arsitektur & Spesifikasi Dokumentasi (Selesai)
+- [x] **Backend Hardening & Guard**: Mengimplementasikan batas upload 2MB (`MAX_UPLOAD_SIZE = 2MB`), status kode HTTP standar (`400 Bad Request` untuk format salah, `413 Payload Too Large` untuk payload berlebih, `500` untuk inferensi error) pada endpoint `/v1/scan` dan `/v1/skintone`.
+- [x] **Dukungan ONNX Runtime & Export Script**: Menambahkan arsitektur inferensi ONNX (`onnxruntime`) pada backend gateway serta membuat skrip `backend/scripts/export_to_onnx.py` untuk mengonversi bobot PyTorch ke format ONNX (`tapis_resnet50.onnx` & `skintone_mobilenet.onnx`).
+- [x] **Requirements & Standarisasi Dependensi**: Menyediakan `backend/requirements.txt` terstandarisasi.
+- [x] **Peningkatan Error Parsing Client API**: Memperbarui `kainara-web/src/lib/api.ts` agar mengekstrak pesan error terstruktur dari respons API FastAPI.
+- [x] **Dokumentasi Terpadu**: Memperbarui `DOCUMENTATION.md` sebagai *single source of truth* untuk seluruh sistem KAINARA.

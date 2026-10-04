@@ -39,7 +39,7 @@ export default function RootLayout({
       lang="id"
       className={`${plusJakartaSans.variable} ${playfair.variable} scroll-smooth`}
     >
-      <body className="min-h-dvh flex flex-col bg-[#FAF9F6] text-[#2D1E16] antialiased selection:bg-[#D4AF37]/30 selection:text-[#2D1E16]">
+      <body className="min-h-dvh flex flex-col bg-[#EDE3DA] text-[#1C1B19] antialiased selection:bg-[#D2AA36]/30 selection:text-[#1C1B19]">
         {children}
       </body>
     </html>

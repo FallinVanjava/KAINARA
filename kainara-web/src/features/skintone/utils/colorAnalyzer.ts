@@ -6,7 +6,7 @@ function generateRecommendation(tone: "warm" | "cool" | "neutral"): SkinToneResu
   if (tone === "warm") {
     return {
       tone: "warm",
-      palette: ["#8B5E3C", "#D4AF37", "#3A2617", "#B57A48"], // Earth Tone & Sogan
+      palette: ["#6D0F0F", "#D2AA36", "#1C1B19", "#F7E2C3"],
       recommendedMotifs: MOTIF_DATA.filter(
         (m) =>
           m.id === "motif_siger" ||
@@ -24,7 +24,7 @@ function generateRecommendation(tone: "warm" | "cool" | "neutral"): SkinToneResu
   if (tone === "cool") {
     return {
       tone: "cool",
-      palette: ["#1F3A93", "#4ECDC4", "#E4F1FE", "#2C3E50"], // Biru & Monokrom
+      palette: ["#2C3E6B", "#D9D9D9", "#EDE3DA", "#1C1B19"],
       recommendedMotifs: MOTIF_DATA.filter(
         (m) =>
           m.id === "motif_kapal" ||
@@ -40,7 +40,7 @@ function generateRecommendation(tone: "warm" | "cool" | "neutral"): SkinToneResu
   // Neutral
   return {
     tone: "neutral",
-    palette: ["#795548", "#607D8B", "#FFC107", "#E0E0E0"],
+    palette: ["#1C1B19", "#D9D9D9", "#D2AA36", "#EDE3DA"],
     recommendedMotifs: [...MOTIF_DATA].sort(() => 0.5 - Math.random()).slice(0, 4),
     recommendations: [...OUTFIT_DATA].sort(() => 0.5 - Math.random()).slice(0, 4),
   };

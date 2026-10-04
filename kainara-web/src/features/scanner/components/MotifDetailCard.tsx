@@ -154,13 +154,18 @@ export function MotifDetailCard({
         )}
       </AnimatePresence>
 
-      {/* ── MOTIF DETAIL BOTTOM-SHEET / CARD (design.md 5.3) ──────── */}
+      {/* ── MOTIF DETAIL BOTTOM-SHEET / CARD (design_kainara_v3.md) ──────── */}
       <motion.article
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-        className="w-full max-w-xl mx-auto bg-white rounded-3xl overflow-hidden shadow-[var(--shadow-ethereal-hover)] border border-sogan-200/80"
+        className="w-full max-w-xl mx-auto bg-white rounded-3xl overflow-hidden shadow-[var(--shadow-ethereal-hover)] border border-sogan-200/80 relative"
       >
+        {/* Swipe Handle Indicator (design_kainara_v3.md) */}
+        <div className="w-full py-2.5 flex items-center justify-center bg-sogan-950/80">
+          <div className="w-12 h-1.5 rounded-full bg-white/40" />
+        </div>
+
         {/* Banner Image with Pop-out Aesthetic */}
         <div className="relative h-64 sm:h-72 w-full bg-sogan-900 overflow-hidden">
           <Image

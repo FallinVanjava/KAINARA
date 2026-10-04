@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[#FAF9F6] flex flex-col">
+    <div className="min-h-screen bg-[#EDE3DA] flex flex-col">
       {/* Navbar Khusus Admin */}
       <header className="bg-sogan-950 text-ivory px-6 py-4 flex justify-between items-center border-b border-sogan-800">
         <div className="flex items-center gap-3">
