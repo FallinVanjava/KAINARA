@@ -5,8 +5,11 @@ Pengujian komprehensif endpoint FastAPI, logika klasifikasi ML, pembatasan ukura
 
 import asyncio
 import io
+import os
 import sys
 from pathlib import Path
+
+os.environ.setdefault("KAINARA_ADMIN_API_KEY", "test-admin-key")
 from PIL import Image
 from fastapi import UploadFile
 

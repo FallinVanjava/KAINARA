@@ -255,6 +255,16 @@ Menyimpan koreksi pengguna ke direktori *hard negatives* untuk siklus pelatihan 
 ### 4. `GET /v1/admin/unlabeled` & `POST /v1/admin/label`
 * **`GET /v1/admin/unlabeled`**: Mengambil satu gambar acak dari pool `dataset/unlabeled/` beserta representasi Base64 dan tebakan awal AI.
 * **`POST /v1/admin/label`**: Memindahkan citra dari direktori *unlabeled* ke kelas definitif `dataset_raw/<motif_id>/`.
+* **Autentikasi**: Kedua endpoint admin membutuhkan header `X-Admin-Key`. Set `KAINARA_ADMIN_API_KEY` pada environment backend. Jangan menyimpan key di Git.
+
+### Konfigurasi keamanan lokal
+```powershell
+$env:KAINARA_ADMIN_API_KEY = "buat-key-kuat-di-luar-repo"
+$env:CORS_ORIGINS = "http://localhost:3000"
+python -m uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+Endpoint feedback dan scanner membatasi upload hingga 2 MB serta memvalidasi isi dan dimensi gambar.
 
 ---
 

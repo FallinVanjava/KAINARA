@@ -7,6 +7,23 @@ import { Button } from "@/components/ui/Button";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
+async function adminFetch(path: string, options?: RequestInit): Promise<Response> {
+  const storedKey = sessionStorage.getItem("kainara-admin-key");
+  const headers = new Headers(options?.headers);
+  if (storedKey) headers.set("X-Admin-Key", storedKey);
+
+  let response = await fetch(`${API_URL}${path}`, { ...options, headers });
+  if (response.status !== 401 || storedKey) return response;
+
+  const enteredKey = window.prompt("Masukkan admin key KAINARA:");
+  if (!enteredKey) return response;
+  sessionStorage.setItem("kainara-admin-key", enteredKey);
+  headers.set("X-Admin-Key", enteredKey);
+  response = await fetch(`${API_URL}${path}`, { ...options, headers });
+  if (response.status === 401) sessionStorage.removeItem("kainara-admin-key");
+  return response;
+}
+
 interface UnlabeledTask {
   filename: string;
   image_base64: string;
@@ -28,7 +45,7 @@ export default function AdminLabelerPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${API_URL}/v1/admin/unlabeled`);
+      const res = await adminFetch("/v1/admin/unlabeled");
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.detail || "Gagal mengambil data.");
@@ -51,7 +68,7 @@ export default function AdminLabelerPage() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`${API_URL}/v1/admin/unlabeled`);
+        const res = await adminFetch("/v1/admin/unlabeled");
         const data = await res.json();
 
         if (!mounted) return;
@@ -79,9 +96,11 @@ export default function AdminLabelerPage() {
     if (!task) return;
     setSubmitting(true);
     try {
-      const res = await fetch(`${API_URL}/v1/admin/label`, {
+      const res = await adminFetch("/v1/admin/label", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           filename: task.filename,
           motif_id: motif_id,

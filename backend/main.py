@@ -3,11 +3,12 @@ import io
 import shutil
 import uuid
 import random
+import secrets
+import base64
 from pathlib import Path
 from typing import List
-import base64
 
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import Depends, FastAPI, UploadFile, File, Form, Header, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -27,12 +28,19 @@ except ImportError:
 
 app = FastAPI(title="KAINARA AI Backend", version="2.2.0")
 
+CORS_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+    if origin.strip()
+]
+ADMIN_API_KEY = os.getenv("KAINARA_ADMIN_API_KEY")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=CORS_ORIGINS,
+    allow_credentials=False,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type", "X-Admin-Key"],
 )
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -48,7 +56,34 @@ ONNX_BATIK_PATH = MODELS_DIR / "tapis_resnet50.onnx"
 ONNX_SKIN_PATH = MODELS_DIR / "skintone_mobilenet.onnx"
 
 MAX_UPLOAD_SIZE = 2 * 1024 * 1024  # 2MB
+MAX_IMAGE_PIXELS = 20_000_000
 MINIMUM_CONFIDENCE = 0.30
+
+
+def require_admin(x_admin_key: str | None = Header(default=None)) -> None:
+    if not ADMIN_API_KEY or not x_admin_key or not secrets.compare_digest(x_admin_key, ADMIN_API_KEY):
+        raise HTTPException(status_code=401, detail="Admin authentication required.")
+
+
+def safe_filename(filename: str) -> str:
+    name = Path(filename).name
+    if not name or name != filename:
+        raise HTTPException(status_code=400, detail="Nama file tidak valid.")
+    return name
+
+
+def validate_image_bytes(file_bytes: bytes) -> None:
+    if len(file_bytes) > MAX_UPLOAD_SIZE:
+        raise HTTPException(status_code=413, detail="Ukuran file melebihi batas 2MB.")
+    try:
+        with Image.open(io.BytesIO(file_bytes)) as image:
+            image.verify()
+            if image.width * image.height > MAX_IMAGE_PIXELS:
+                raise HTTPException(status_code=413, detail="Dimensi gambar terlalu besar.")
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail="File bukan gambar yang valid.") from exc
 
 # === CONFIG TAPIS SCANNER (Fokus Wastra Tapis Lampung) ===
 CLASS_NAMES = [
@@ -159,10 +194,12 @@ def simulate_inference_batik(filename: str) -> List[float]:
 async def scan_batik(image: UploadFile = File(...)):
     if not image.content_type or not image.content_type.startswith("image/"):
         return JSONResponse(status_code=400, content={"success": False, "code": "INVALID_FORMAT", "message": "File harus berupa gambar."})
-    
-    file_bytes = await image.read()
-    if len(file_bytes) > MAX_UPLOAD_SIZE:
-        return JSONResponse(status_code=413, content={"success": False, "code": "PAYLOAD_TOO_LARGE", "message": "Ukuran file melebihi batas 2MB."})
+
+    file_bytes = await image.read(MAX_UPLOAD_SIZE + 1)
+    try:
+        validate_image_bytes(file_bytes)
+    except HTTPException as exc:
+        return JSONResponse(status_code=exc.status_code, content={"success": False, "code": "INVALID_IMAGE", "message": exc.detail})
 
     try:
         if onnx_batik_session is not None:
@@ -226,10 +263,12 @@ def simulate_inference_skin() -> List[float]:
 async def scan_skintone(image: UploadFile = File(...)):
     if not image.content_type or not image.content_type.startswith("image/"):
         return JSONResponse(status_code=400, content={"success": False, "code": "INVALID_FORMAT", "message": "File harus berupa gambar."})
-    
-    file_bytes = await image.read()
-    if len(file_bytes) > MAX_UPLOAD_SIZE:
-        return JSONResponse(status_code=413, content={"success": False, "code": "PAYLOAD_TOO_LARGE", "message": "Ukuran file melebihi batas 2MB."})
+
+    file_bytes = await image.read(MAX_UPLOAD_SIZE + 1)
+    try:
+        validate_image_bytes(file_bytes)
+    except HTTPException as exc:
+        return JSONResponse(status_code=exc.status_code, content={"success": False, "code": "INVALID_IMAGE", "message": exc.detail})
 
     try:
         if onnx_skin_session is not None:
@@ -262,17 +301,24 @@ async def scan_skintone(image: UploadFile = File(...)):
 # ==============================================================
 @app.post("/v1/scan/feedback")
 async def scan_feedback(image: UploadFile = File(...), correct_motif_id: str = Form(...)):
-    if correct_motif_id not in CLASS_NAMES: raise HTTPException(status_code=400, detail="ID Motif tidak valid.")
+    if correct_motif_id not in CLASS_NAMES:
+        raise HTTPException(status_code=400, detail="ID Motif tidak valid.")
+    if not image.content_type or not image.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="File harus berupa gambar.")
+
+    file_bytes = await image.read(MAX_UPLOAD_SIZE + 1)
+    validate_image_bytes(file_bytes)
+
     class_dir = HARD_NEGATIVES_DIR / correct_motif_id
     class_dir.mkdir(parents=True, exist_ok=True)
-    ext = os.path.splitext(image.filename)[1] or ".jpg"
-    unique_filename = f"feedback_{uuid.uuid4().hex[:8]}{ext}"
+    ext = Path(image.filename or "").suffix.lower() or ".jpg"
+    unique_filename = f"feedback_{uuid.uuid4().hex}{ext}"
     file_path = class_dir / unique_filename
     try:
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(image.file, buffer)
-    except Exception:
-        raise HTTPException(status_code=500, detail="Gagal menyimpan gambar feedback.")
+        with open(file_path, "xb") as buffer:
+            buffer.write(file_bytes)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail="Gagal menyimpan gambar feedback.") from exc
     return {"success": True, "message": "Terima kasih! Laporan feedback berhasil disimpan."}
 
 
@@ -284,7 +330,7 @@ class LabelRequest(BaseModel):
     motif_id: str
 
 @app.get("/v1/admin/unlabeled")
-async def get_unlabeled_images():
+async def get_unlabeled_images(_: None = Depends(require_admin)):
     """Mengambil satu gambar acak dari folder unlabeled beserta prediksi AI sementaranya."""
     UNLABELED_DIR.mkdir(parents=True, exist_ok=True)
     files = [f for f in os.listdir(UNLABELED_DIR) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp'))]
@@ -331,13 +377,15 @@ async def get_unlabeled_images():
     }
 
 @app.post("/v1/admin/label")
-async def process_label(req: LabelRequest):
+async def process_label(req: LabelRequest, _: None = Depends(require_admin)):
     """Memindahkan file dari unlabeled ke original folder berdasarkan label user."""
     if req.motif_id not in CLASS_NAMES:
         raise HTTPException(status_code=400, detail="ID Motif tidak valid.")
         
-    source_path = UNLABELED_DIR / req.filename
-    if not source_path.exists():
+    filename = safe_filename(req.filename)
+    source_path = (UNLABELED_DIR / filename).resolve()
+    unlabeled_root = UNLABELED_DIR.resolve()
+    if unlabeled_root not in source_path.parents or not source_path.is_file():
         raise HTTPException(status_code=404, detail="File tidak ditemukan di folder unlabeled.")
         
     # Buat direktori kelas tujuan di original
