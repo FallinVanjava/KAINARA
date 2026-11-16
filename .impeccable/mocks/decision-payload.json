@@ -1,0 +1,45 @@
+{
+  "title": "Pilih komposisi landing KAINARA",
+  "question": "Dadu memilih tiga komposisi landing. Pilih satu untuk dibangun, minta tangan lain, atau mengarahkan.",
+  "options": [
+    {
+      "id": "assigned",
+      "kind": "assigned",
+      "label": "Tenun Benang Terhitung",
+      "kicker": "THE ROLL",
+      "lineage": "alat tenun tapis: benang pakan dan pakit terhitung",
+      "thesis": "Landing tersusun seperti alat tenun: kolom benang rapat memegang headline, modul scan disisipkan seperti peluncur di antara benang, motif menjadi deretan benang lintang.",
+      "palette": ["#FCF8F3", "#F7E2C3", "#6D0F0F", "#262525"],
+      "materials": ["grid benang 1px", "blok emas", "sudut tajam"],
+      "viewport": "Kolom-kolom rapat membagi hero; headline Playfair memanjang melintasi kolom; kotak scan menyisip sebagai panel antar-benang.",
+      "risk": "Grid terlalu rapat membuat teks sempit; butuh irama naik-turun agar tidak terasa tabel.",
+      "comp": ".impeccable/mocks/decision/tenun.html"
+    },
+    {
+      "id": "kain",
+      "kind": "dealt",
+      "label": "Kain Terbentang",
+      "lineage": "kain tapis digelar penuh, panel demi panel",
+      "thesis": "Halaman sebagai kain yang ditebarkan: band band full-bleed warna cream, emas, fog berlapis seperti lembaran kain dengan jahitan garis 1px, scan duduk di band emas.",
+      "palette": ["#F7E2C3", "#FCF8F3", "#6D0F0F", "#ECECEC"],
+      "materials": ["band warna full-bleed", "jahitan 1px", "grid editorial"],
+      "viewport": "Band-banding horizontal: cream untuk berita, emas untuk scan, fog untuk kurasi; headline besar memotong band pertama.",
+      "risk": "Band berulang tanpa variasi isi terasa polos; variasi lebar band harus nyata.",
+      "comp": ".impeccable/mocks/decision/kain.html"
+    },
+    {
+      "id": "kartu",
+      "kind": "dealt",
+      "label": "Kartu Arsip Museum",
+      "lineage": "kartu katalog arsip museum dan perpustakaan",
+      "thesis": "Landing sebagai meja arsip: satu kartu katalog besar menampung judul dan scan, motif dan outfit jadi kartu indeks bernomor dengan cap asal daerah.",
+      "palette": ["#FEFEFE", "#F7E2C3", "#6D0F0F", "#262525"],
+      "materials": ["kartu indeks", "cap maroon", "garis arsip"],
+      "viewport": "Kartu besar di tengah membawa headline dan tombol scan; kartu motif tersusun sebagai lembaran indeks bernomor di bawahnya.",
+      "risk": "Terasa administratif dan dingin bila tipografi tidak berani.",
+      "comp": ".impeccable/mocks/decision/kartu.html"
+    }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "buildPath": { "value": "comp", "toggle": true }
+}

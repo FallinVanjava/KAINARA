@@ -1,0 +1,130 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Playfair Display', Georgia, serif;
+
+    /* Warm Cultural Editorial: 60% cream / 30% gold & fog / 10% maroon */
+    --color-cream: #FCF8F3;
+    --color-gold: #F7E2C3;
+    --color-fog: #F3F3F3;
+    --color-surface: #FEFEFE;
+    --color-maroon: #6D0F0F;
+    --color-charcoal: #262525;
+    --color-line: #ECECEC;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* Sticky nav clearance for keyboard focus and in-page anchors */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+}
+
+/* Visible keyboard focus everywhere; unlayered so it beats outline-none utilities */
+:focus-visible {
+    outline: 2px solid #6D0F0F;
+    outline-offset: 2px;
+}
+
+/* Maroon tak kontras di atas latar gelap: ring emas di footer */
+footer :focus-visible {
+    outline-color: #F7E2C3;
+}
+
+button:not(:disabled),
+select,
+[role='tab'] {
+    cursor: pointer;
+}
+
+/* Scroll reveal motion */
+.reveal-init {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.reveal-init.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hover lift for cards: border color shift, no shadow */
+.hover-lift {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+    border-color: rgba(109, 15, 15, 0.35);
+}
+
+/* Image zoom inside card */
+.img-zoom {
+    overflow: hidden;
+}
+
+.img-zoom img {
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.img-zoom:hover img {
+    transform: scale(1.03);
+}
+
+/* Button press feedback */
+.btn-press:active {
+    transform: scale(0.98);
+}
+
+/* Skeleton shimmer for loading states */
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    background: #F3F3F3;
+}
+
+.skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    transform: translateX(-100%);
+    animation: skeleton-shimmer 1.4s infinite;
+}
+
+@keyframes skeleton-shimmer {
+    100% { transform: translateX(100%); }
+}
+
+/* Parallax helper: element moves slower than scroll */
+[data-parallax] {
+    will-change: transform;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .reveal-init,
+    .hover-lift,
+    .img-zoom img,
+    .btn-press:active,
+    .skeleton::after {
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+    }
+}
+
+::selection {
+    background: #F7E2C3;
+}

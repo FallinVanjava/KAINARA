@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { width:1440px; height:900px; overflow:hidden; background:#FCF8F3; color:#262525; font-family:'Plus Jakarta Sans',sans-serif; }
+  .band { border-top:1px solid #ECECEC; }
+  .nav { height:76px; display:flex; align-items:center; justify-content:space-between; padding:0 64px; }
+  .mark { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; }
+  .links { display:flex; gap:34px; align-items:center; font-size:14px; }
+  .fav { border:1px solid #262525; padding:9px 16px; font-size:11px; letter-spacing:.15em; text-transform:uppercase; font-weight:600; }
+  .hero { display:grid; grid-template-columns:1.15fr .85fr; min-height:420px; }
+  .hero .text { padding:54px 64px 46px; }
+  .eyebrow { color:#6D0F0F; font-size:11px; font-weight:600; letter-spacing:.15em; text-transform:uppercase; }
+  h1 { font-family:'Playfair Display',serif; font-size:70px; line-height:1.02; letter-spacing:-.025em; margin-top:20px; }
+  .sub { margin-top:22px; font-size:15px; line-height:1.7; color:rgba(38,37,37,.8); max-width:470px; }
+  .actions { margin-top:30px; display:flex; gap:30px; align-items:center; }
+  .btn { background:#6D0F0F; color:#FCF8F3; padding:16px 28px; font-size:14px; font-weight:600; }
+  .link { font-size:14px; border-bottom:1px solid rgba(38,37,37,.35); padding-bottom:5px; }
+  .photo { background:#F7E2C3; position:relative; min-height:420px; display:flex; align-items:flex-end; padding:30px; }
+  .photo::before { content:""; position:absolute; inset:0; background-image:repeating-linear-gradient(0deg, rgba(109,15,15,.16) 0 2px, transparent 2px 11px), repeating-linear-gradient(90deg, rgba(109,15,15,.1) 0 2px, transparent 2px 13px); }
+  .photo span { position:relative; font-family:'Playfair Display',serif; color:#6D0F0F; font-size:30px; line-height:1.1; }
+  .scan { background:#F7E2C3; padding:34px 64px; display:grid; grid-template-columns:1fr 1.4fr; gap:60px; }
+  .scan h2 { font-family:'Playfair Display',serif; font-size:34px; line-height:1.1; margin-top:12px; }
+  .scan p { font-size:13px; line-height:1.65; margin-top:10px; max-width:340px; color:rgba(38,37,37,.75); }
+  .tabs { display:flex; gap:30px; border-bottom:1px solid rgba(38,37,37,.2); font-size:11px; font-weight:600; letter-spacing:.15em; text-transform:uppercase; }
+  .tabs .on { color:#6D0F0F; border-bottom:2px solid #6D0F0F; padding-bottom:11px; }
+  .tabs .off { color:rgba(38,37,37,.55); padding-bottom:11px; }
+  .drop { margin-top:20px; background:#FEFEFE; border:1px dashed rgba(38,37,37,.4); height:96px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:13px; }
+  .drop small { font-size:11px; color:rgba(38,37,37,.5); margin-top:6px; }
+  .outfits { background:#F3F3F3; padding:26px 64px; display:grid; grid-template-columns:1fr 1fr; gap:26px; }
+  .ocard { background:#FEFEFE; border:1px solid #ECECEC; padding:14px; display:grid; grid-template-columns:110px 1fr; gap:16px; align-items:center; }
+  .oim { height:130px; background:#F7E2C3; }
+  .otag { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:rgba(38,37,37,.5); }
+  .ocard h3 { font-family:'Playfair Display',serif; font-size:22px; margin-top:6px; }
+  .chips { display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
+  .chip { border:1px solid #ECECEC; padding:4px 8px; font-size:10px; color:rgba(38,37,37,.65); }
+</style>
+</head>
+<body>
+<div class="band">
+  <div class="nav">
+    <div class="mark">KAINARA</div>
+    <div class="links"><span>Galeri Tapis</span><span>Katalog Outfit</span><span>Scan</span><span class="fav">Favorit (0)</span></div>
+  </div>
+</div>
+<div class="band hero">
+  <div class="text">
+    <div class="eyebrow">Arsip Digital &amp; Identifikasi AI</div>
+    <h1>Mengenali Tapis Lampung lewat motif dan konteksnya.</h1>
+    <p class="sub">KAINARA mengarsipkan motif tapis Lampung dan menyediakan identifikasi berbasis AI untuk membantu Anda memahami kain yang Anda lihat.</p>
+    <div class="actions"><span class="btn">Scan Motif Tapis</span><span class="link">Jelajahi Galeri</span></div>
+  </div>
+  <div class="photo"><span>Tapis Cucuk Pinggir<br>Banda Lampung</span></div>
+</div>
+<div class="band scan">
+  <div>
+    <div class="eyebrow">Identifikasi AI</div>
+    <h2>Scan langsung dari halaman ini.</h2>
+    <p>Unggah foto kain atau wajah. Gambar diproses model CNN dan tidak disimpan.</p>
+  </div>
+  <div>
+    <div class="tabs"><span class="on">Scan Motif Tapis</span><span class="off">Scan Skintone</span></div>
+    <div class="drop">Pilih gambar<small>JPG, PNG, WEBP · maksimal 2 MB</small></div>
+  </div>
+</div>
+<div class="band outfits">
+  <div class="ocard"><div class="oim"></div><div><div class="otag">Set · cocok untuk warm</div><h3>Makuta Emas Bertabur</h3><div class="chips"><span class="chip">Tapis Cucuk Pinggir</span></div></div></div>
+  <div class="ocard"><div class="oim"></div><div><div class="otag">Atasan · cocok untuk warm &amp; neutral</div><h3>Kemeja Maroon Gradasi Tapis</h3><div class="chips"><span class="chip">Tapis Cucuk Pinggir</span><span class="chip">Tapis Grevasia</span></div></div></div>
+</div>
+</body>
+</html>
