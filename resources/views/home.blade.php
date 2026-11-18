@@ -9,7 +9,7 @@
             <div class="grid items-center gap-12 md:grid-cols-12 md:gap-10">
                 <div class="md:col-span-7">
                     <p class="text-xs font-semibold uppercase tracking-[0.18em] text-maroon">Arsip Digital &amp; Identifikasi AI</p>
-                    <h1 class="mt-6 max-w-3xl font-display text-[2.9rem] font-bold leading-[1.05] tracking-[-0.02em] sm:text-6xl lg:text-[4rem]">
+                    <h1 class="mt-6 max-w-3xl font-display text-[2.9rem] font-bold leading-[1.05] tracking-[-0.02em] sm:text-6xl lg:text-[4.6rem]">
                         Mengenali Tapis Lampung lewat <span class="italic font-normal">motif</span> dan konteksnya.
                     </h1>
                     <p class="mt-6 max-w-xl text-base leading-relaxed text-charcoal/80">

@@ -1,0 +1,237 @@
+%% ERD KAINARA — seluruh data (mobile + web admin + infrastruktur Laravel)
+%% Gabungan: profil/auth, katalog, favorit, scan, notifikasi, rekomendasi,
+%% share, riwayat, feedback, audit, dan tabel infra Laravel.
+%% Belum ada migration; file ini rancangan skema.
+
+erDiagram
+    USERS {
+        bigint id PK
+        varchar name
+        varchar email UK
+        varchar password
+        varchar photo_path
+        varchar gender
+        varchar location
+        varchar language
+        varchar role
+        boolean notify_new_motif
+        boolean notify_trending
+        boolean is_private
+        timestamp email_verified_at
+        varchar remember_token
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    PASSWORD_RESET_TOKENS {
+        varchar email PK
+        varchar token
+        timestamp created_at
+    }
+
+    DEVICE_TOKENS {
+        bigint id PK
+        bigint user_id FK
+        varchar platform
+        varchar token UK
+        timestamp last_seen_at
+        timestamp created_at
+    }
+
+    TAPIS_MOTIFS {
+        bigint id PK
+        varchar name
+        varchar slug UK
+        varchar origin_region
+        varchar dominant_color
+        text description
+        text history
+        text philosophy
+        varchar image_path
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    OUTFITS {
+        bigint id PK
+        varchar name
+        varchar slug UK
+        varchar category
+        varchar dominant_color
+        json skintone_match
+        text description
+        text mix_match_notes
+        varchar image_path
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    MOTIF_OUTFIT {
+        bigint tapis_motif_id PK,FK
+        bigint outfit_id PK,FK
+    }
+
+    FAVORITES {
+        bigint id PK
+        bigint user_id FK
+        bigint tapis_motif_id FK
+        bigint outfit_id FK
+        timestamp created_at
+    }
+
+    SCAN_SESSIONS {
+        bigint id PK
+        bigint user_id FK
+        varchar scan_type
+        varchar image_path
+        varchar status
+        varchar result_label
+        decimal confidence
+        json raw_result
+        varchar model_version
+        text error_message
+        timestamp created_at
+    }
+
+    RECOMMENDATIONS {
+        bigint id PK
+        bigint user_id FK
+        bigint scan_session_id FK
+        bigint outfit_id FK
+        bigint tapis_motif_id FK
+        varchar source
+        decimal score
+        timestamp created_at
+    }
+
+    RECOMMENDATION_FEEDBACK {
+        bigint id PK
+        bigint user_id FK
+        bigint recommendation_id FK
+        boolean is_like
+        timestamp created_at
+    }
+
+    NOTIFICATIONS {
+        bigint id PK
+        bigint user_id FK
+        varchar type
+        varchar title
+        text body
+        bigint tapis_motif_id FK
+        bigint outfit_id FK
+        timestamp read_at
+        timestamp created_at
+    }
+
+    SHARES {
+        bigint id PK
+        bigint user_id FK
+        bigint tapis_motif_id FK
+        bigint outfit_id FK
+        varchar platform
+        timestamp created_at
+    }
+
+    SEARCH_HISTORIES {
+        bigint id PK
+        bigint user_id FK
+        varchar keyword
+        timestamp created_at
+    }
+
+    RECENTLY_VIEWED {
+        bigint id PK
+        bigint user_id FK
+        bigint tapis_motif_id FK
+        bigint outfit_id FK
+        timestamp viewed_at
+    }
+
+    ACTIVITY_LOGS {
+        bigint id PK
+        bigint user_id FK
+        varchar action
+        varchar subject_type
+        bigint subject_id
+        json details
+        timestamp created_at
+    }
+
+    CACHE {
+        varchar key PK
+        mediumtext value
+        int expiration
+    }
+
+    CACHE_LOCKS {
+        varchar key PK
+        varchar owner
+        int expiration
+    }
+
+    JOBS {
+        bigint id PK
+        varchar queue
+        longtext payload
+        tinyint attempts
+        int reserved_at
+        int available_at
+        int created_at
+    }
+
+    JOB_BATCHES {
+        varchar id PK
+        varchar name
+        int total_jobs
+        int pending_jobs
+        int failed_jobs
+        longtext failed_job_ids
+        mediumtext options
+        int cancelled_at
+        int created_at
+        int finished_at
+    }
+
+    FAILED_JOBS {
+        bigint id PK
+        varchar uuid UK
+        text connection
+        text queue
+        longtext payload
+        longtext exception
+        timestamp failed_at
+    }
+
+    USERS ||--o{ DEVICE_TOKENS : "perangkat push"
+    USERS ||--o{ FAVORITES : "menyimpan favorit"
+    USERS ||--o{ SCAN_SESSIONS : "melakukan scan"
+    USERS ||--o{ NOTIFICATIONS : "menerima notifikasi"
+    USERS ||--o{ RECOMMENDATIONS : "mendapat rekomendasi"
+    USERS ||--o{ RECOMMENDATION_FEEDBACK : "menilai rekomendasi"
+    USERS ||--o{ SHARES : "share konten"
+    USERS ||--o{ SEARCH_HISTORIES : "riwayat pencarian"
+    USERS ||--o{ RECENTLY_VIEWED : "terakhir dilihat"
+    USERS ||--o{ ACTIVITY_LOGS : "aktivitas"
+    USERS ||--o| PASSWORD_RESET_TOKENS : "reset via email"
+
+    TAPIS_MOTIFS ||--o{ MOTIF_OUTFIT : "dipakai outfit"
+    OUTFITS ||--o{ MOTIF_OUTFIT : "memakai motif"
+
+    TAPIS_MOTIFS ||--o{ FAVORITES : "motif difavoritkan"
+    OUTFITS ||--o{ FAVORITES : "outfit difavoritkan"
+
+    TAPIS_MOTIFS ||--o{ NOTIFICATIONS : "topik motif"
+    OUTFITS ||--o{ NOTIFICATIONS : "topik outfit"
+
+    TAPIS_MOTIFS ||--o{ SHARES : "motif dibagikan"
+    OUTFITS ||--o{ SHARES : "outfit dibagikan"
+
+    TAPIS_MOTIFS ||--o{ RECENTLY_VIEWED : "motif dilihat"
+    OUTFITS ||--o{ RECENTLY_VIEWED : "outfit dilihat"
+
+    SCAN_SESSIONS ||--o{ RECOMMENDATIONS : "menghasilkan"
+    RECOMMENDATIONS ||--o{ RECOMMENDATION_FEEDBACK : "dinilai user"
+
+    OUTFITS ||--o{ RECOMMENDATIONS : "outfit direkomendasikan"
+    TAPIS_MOTIFS ||--o{ RECOMMENDATIONS : "motif direkomendasikan"

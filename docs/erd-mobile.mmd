@@ -1,0 +1,113 @@
+%% ERD KAINARA — alur sistem MOBILE
+%% Rancangan data untuk mendukung flow: Home/Informasi, Mode Scan, Favorit,
+%% Informasi, Profil, Notifikasi, dan Rekomendasi.
+%% Belum ada migration; file ini rancangan skema.
+
+erDiagram
+    USERS {
+        bigint id PK
+        varchar name
+        varchar email UK
+        varchar password
+        varchar photo_path
+        varchar gender
+        varchar location
+        varchar language
+        boolean notify_new_motif
+        boolean notify_trending
+        boolean is_private
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    TAPIS_MOTIFS {
+        bigint id PK
+        varchar name
+        varchar slug UK
+        varchar origin_region
+        varchar dominant_color
+        text description
+        text history
+        text philosophy
+        varchar image_path
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    OUTFITS {
+        bigint id PK
+        varchar name
+        varchar slug UK
+        varchar category
+        varchar dominant_color
+        json skintone_match
+        text description
+        text mix_match_notes
+        varchar image_path
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    MOTIF_OUTFIT {
+        bigint tapis_motif_id PK,FK
+        bigint outfit_id PK,FK
+    }
+
+    FAVORITES {
+        bigint id PK
+        bigint user_id FK
+        bigint tapis_motif_id FK
+        bigint outfit_id FK
+        timestamp created_at
+    }
+
+    SCAN_SESSIONS {
+        bigint id PK
+        bigint user_id FK
+        varchar scan_type
+        varchar image_path
+        varchar result_label
+        decimal confidence
+        timestamp created_at
+    }
+
+    NOTIFICATIONS {
+        bigint id PK
+        bigint user_id FK
+        varchar type
+        varchar title
+        text body
+        bigint tapis_motif_id FK
+        bigint outfit_id FK
+        timestamp read_at
+        timestamp created_at
+    }
+
+    RECOMMENDATIONS {
+        bigint id PK
+        bigint user_id FK
+        bigint scan_session_id FK
+        bigint outfit_id FK
+        bigint tapis_motif_id FK
+        varchar source
+        decimal score
+        timestamp created_at
+    }
+
+    USERS ||--o{ FAVORITES : "menyimpan favorit"
+    USERS ||--o{ SCAN_SESSIONS : "melakukan scan"
+    USERS ||--o{ NOTIFICATIONS : "menerima notifikasi"
+    USERS ||--o{ RECOMMENDATIONS : "mendapat rekomendasi"
+
+    TAPIS_MOTIFS ||--o{ MOTIF_OUTFIT : "dipakai outfit"
+    OUTFITS ||--o{ MOTIF_OUTFIT : "memakai motif"
+
+    TAPIS_MOTIFS ||--o{ FAVORITES : "motif difavoritkan"
+    OUTFITS ||--o{ FAVORITES : "outfit difavoritkan"
+
+    TAPIS_MOTIFS ||--o{ NOTIFICATIONS : "topik motif"
+    OUTFITS ||--o{ NOTIFICATIONS : "topik outfit"
+
+    SCAN_SESSIONS ||--o{ RECOMMENDATIONS : "menghasilkan"
+    OUTFITS ||--o{ RECOMMENDATIONS : "outfit direkomendasikan"
+    TAPIS_MOTIFS ||--o{ RECOMMENDATIONS : "motif direkomendasikan"
