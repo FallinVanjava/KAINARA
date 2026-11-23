@@ -1,0 +1,68 @@
+/* =====================================================================
+   Tema KAINARA untuk <SketchCityHero className="kainara-hero" />
+   Hanya mengubah WARNA. Tata letak, ukuran, dan animasi tidak disentuh.
+
+   Komposisi 60 / 30 / 10 (diambil dari tampilan aplikasi mobile Kainara)
+     60%  Krem   #FFF8F0   latar hero (area terluas), panel dropdown
+     30%  Marun  #7A1212   bar header, judul, teks angka & paragraf
+     10%  Emas   #96640F   angka statistik, panah, pin, fokus, hover
+                           (emas muda #E8C36A saat berada di atas marun)
+
+   Cara pakai: impor file ini di app/globals.css
+     @import "./kainara-hero.css";
+   ===================================================================== */
+
+/* ---------- Mode terang ---------- */
+.kainara-hero.sch-root {
+  --sch-paper: #fff8f0; /* 60% krem */
+  --sch-bar: #7a1212;   /* 30% marun (bar header) */
+  --sch-ink: #5e0f11;   /* 30% marun tua (judul, angka-teks) */
+  --sch-soft: #7a3a3a;  /* marun lembut (paragraf) */
+  --sch-line: rgba(94, 15, 17, 0.16);
+}
+
+/* ---------- Mode gelap (kelas .dark ala shadcn) ---------- */
+.dark .kainara-hero.sch-root {
+  --sch-paper: #1b0e0e;
+  --sch-bar: #5c0e10;
+  --sch-ink: #f6e9dc;
+  --sch-soft: #d9c3b5;
+  --sch-line: rgba(246, 233, 220, 0.16);
+  --sch-accent: #e3b958 !important; /* menimpa prop accent saat gelap */
+}
+
+/* ---------- Header marun: teks krem, aksen emas muda ---------- */
+.kainara-hero .sch-bar {
+  --sch-ink: #fff8f0;
+  --sch-line: rgba(255, 248, 240, 0.24);
+  --sch-accent: #e8c36a;
+  color: var(--sch-ink);
+}
+.kainara-hero .sch-navbtn svg path {
+  stroke: var(--sch-accent); /* panah dropdown (di atas marun) */
+}
+
+/* ---------- Panel dropdown: kembali krem agar terbaca ---------- */
+.kainara-hero .sch-panel {
+  --sch-ink: #5e0f11;
+  --sch-line: rgba(94, 15, 17, 0.14);
+  --sch-accent: #96640f;
+  background: #fff8f0;
+  color: var(--sch-ink);
+}
+.dark .kainara-hero .sch-panel {
+  --sch-ink: #f6e9dc;
+  --sch-line: rgba(246, 233, 220, 0.16);
+  --sch-accent: #e3b958;
+  background: #2a1415;
+}
+
+/* ---------- Ilustrasi: nada hangat agar selaras dengan palet ----------
+   (titik awal untuk gambar bawaan yang bernuansa mint. Hapus dua aturan ini
+   jika nanti memakai ilustrasi tapis sendiri.) */
+.kainara-hero .sch-sky img {
+  filter: sepia(1) saturate(1.1);
+}
+.kainara-hero .sch-ink img {
+  filter: sepia(0.55) hue-rotate(-10deg);
+}
