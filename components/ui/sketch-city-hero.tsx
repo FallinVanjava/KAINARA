@@ -457,7 +457,7 @@ export default function SketchCityHero({
       {fontHref && <link ref={linkRef} rel="stylesheet" href={fontHref} />}
       <style>{css}</style>
       {className === "kainara-hero" && (
-        <style>{`.kainara-hero .sch-art::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg,rgba(255,248,240,.04),rgba(150,100,15,.12) 55%,rgba(94,15,17,.2));mix-blend-mode:color}.kainara-hero .sch-single-wash{filter:sepia(.12) saturate(1.9) contrast(1.08)}.kainara-hero .sch-single-ink{opacity:.12;filter:grayscale(1) contrast(1.2) brightness(.96)}`}</style>
+        <style>{`.kainara-hero .sch-art::after{content:none}.kainara-hero .sch-single-wash{filter:none;opacity:0}.kainara-hero .sch-single-ink{opacity:1;filter:none}`}</style>
       )}
 
       <header className="sch-bar">

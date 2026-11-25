@@ -14,7 +14,7 @@
 
 /* ---------- Mode terang ---------- */
 .kainara-hero.sch-root {
-  --sch-paper: #fff8f0; /* 60% krem */
+  --sch-paper: #faf3eb; /* sama dengan latar landing page */
   --sch-bar: #ffffff;   /* bar header putih */
   --sch-ink: #5e0f11;   /* 30% marun tua (judul, angka-teks) */
   --sch-soft: #7a3a3a;  /* marun lembut (paragraf) */

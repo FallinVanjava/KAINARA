@@ -298,6 +298,30 @@ export interface Database {
           }
         ];
       };
+      login_history: {
+        Row: {
+          id: string;
+          user_id: string;
+          logged_at: string;
+          ip_address: string | null;
+          user_agent: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          logged_at?: string;
+          ip_address?: string | null;
+          user_agent?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          logged_at?: string;
+          ip_address?: string | null;
+          user_agent?: string | null;
+        };
+        Relationships: [];
+      };
       scan_logs: {
         Row: {
           id: string;

@@ -44,7 +44,7 @@ export default function KainaraHero({
       mark={false}
       navLinks={navLinks}
       singleSketch
-      singleSketchSrc="/images/tapis-hero-sketch.png"
+      singleSketchSrc="/images/tenun-tapis.jpg"
     />
   )
 }

@@ -2,6 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { headers } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 import { loginSchema, type LoginInput } from '@/lib/validators/auth';
 
@@ -57,6 +58,23 @@ export async function signInAdmin(input: LoginInput): Promise<AuthActionResult> 
       error: 'Akun administrator ini telah dinonaktifkan. Hubungi pengelola utama.',
     };
   }
+
+  const requestHeaders = await headers();
+  const forwardedFor = requestHeaders.get('x-forwarded-for');
+  const ipAddress =
+    forwardedFor?.split(',')[0]?.trim() ||
+    requestHeaders.get('x-real-ip') ||
+    null;
+  const userAgent = requestHeaders.get('user-agent') || null;
+
+  const { error: historyError } = await supabase.from('login_history').insert({
+    user_id: authData.user.id,
+    ip_address: ipAddress,
+    user_agent: userAgent,
+  });
+
+  // Riwayat login tidak boleh menggagalkan proses masuk.
+  if (historyError) console.error('login_history insert:', historyError.message);
 
   revalidatePath('/admin', 'layout');
   return { success: true };

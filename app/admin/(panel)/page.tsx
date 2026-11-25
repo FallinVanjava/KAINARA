@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
   Layers,
+  LogIn,
   Shirt,
   HelpCircle,
   Users,
@@ -69,6 +70,14 @@ async function DashboardContent({ searchParams }: AdminDashboardPageProps) {
 
       {/* Kartu KPI Summary */}
       <KpiCards summary={stats.summary} />
+      <div className="rounded-2xl border border-[#E8D8C8] bg-white p-5 shadow-xs dark:bg-[#2A1415] dark:border-[rgba(246,233,220,0.16)]">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-semibold text-[#7A3A3A] dark:text-[#D9C3B5]">Riwayat Login</span>
+          <LogIn className="size-4 text-[#96640F] dark:text-[#E8C36A]" />
+        </div>
+        <p className="mt-3 font-heading text-2xl font-extrabold text-[#5E0F11] dark:text-[#F6E9DC]">{stats.loginStats.total_login}</p>
+        <p className="mt-1 text-[11px] text-[#7A3A3A] dark:text-[#D9C3B5]">Total login tercatat · {stats.loginStats.login_7hari} dalam 7 hari terakhir</p>
+      </div>
 
       {/* Grafik Aktivitas Harian (Line Chart) */}
       <ScanLineChart data={stats.scanPerDay} />

@@ -38,12 +38,18 @@ export interface QuizStatsItem {
   rata_rata_skor_persen: number;
 }
 
+export interface LoginStatsItem {
+  total_login: number;
+  login_7hari: number;
+}
+
 export interface DashboardStatsResult {
   summary: DashboardSummary | null;
   scanPerDay: ScanPerDayItem[];
   topMotifs: TopMotifItem[];
   skintoneDistribution: SkintoneDistItem[];
   quizStats: QuizStatsItem | null;
+  loginStats: LoginStatsItem;
   error?: string | null;
 }
 
@@ -55,6 +61,7 @@ export async function getAdminDashboardStats(
 
   const p_end = endDate || getJakartaDate();
   const p_start = startDate || getJakartaDateDaysAgo(29);
+  const loginStart = startDate || getJakartaDateDaysAgo(6);
 
   try {
     const [summaryRes, scanRes, topMotifsRes, skintoneRes, quizStatsRes] =
@@ -82,6 +89,27 @@ export async function getAdminDashboardStats(
       console.error('Error admin_quiz_stats:', quizStatsRes.error);
     }
 
+    // === Login history stats (fallback 0 jika tabel belum dibuat) ===
+    let loginTotal = 0;
+    let login7Hari = 0;
+    try {
+      const totalRes = await supabase
+        .from('login_history')
+        .select('*', { count: 'exact', head: true });
+      if (!totalRes.error && totalRes.count !== null) {
+        loginTotal = totalRes.count;
+      }
+    } catch {}
+    try {
+      const sevenRes = await supabase
+        .from('login_history')
+        .select('*', { count: 'exact', head: true })
+        .gte('logged_at', `${loginStart}T00:00:00+07:00`);
+      if (!sevenRes.error && sevenRes.count !== null) {
+        login7Hari = sevenRes.count;
+      }
+    } catch {}
+
     const hasAnyError =
       summaryRes.error ||
       scanRes.error ||
@@ -100,6 +128,10 @@ export async function getAdminDashboardStats(
       skintoneDistribution:
         (skintoneRes.data as unknown as SkintoneDistItem[]) || [],
       quizStats: (quizStatsData as unknown as QuizStatsItem) || null,
+      loginStats: {
+        total_login: loginTotal,
+        login_7hari: login7Hari,
+      },
       error: hasAnyError ? 'Sebagian statistik gagal dimuat dari server.' : null,
     };
   } catch (err) {
@@ -110,6 +142,7 @@ export async function getAdminDashboardStats(
       topMotifs: [],
       skintoneDistribution: [],
       quizStats: null,
+      loginStats: { total_login: 0, login_7hari: 0 },
       error: 'Terjadi kegagalan komunikasi saat memuat data statistik.',
     };
   }
