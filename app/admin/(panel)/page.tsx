@@ -5,7 +5,6 @@ import {
   Layers,
   LogIn,
   Shirt,
-  HelpCircle,
   Users,
   ArrowUpRight,
   AlertCircle,
@@ -17,12 +16,11 @@ import { KpiCards } from '@/components/admin/stats/kpi-cards';
 import { ScanLineChart } from '@/components/admin/charts/scan-line-chart';
 import { TopMotifsChart } from '@/components/admin/charts/top-motifs-chart';
 import { SkintoneDonutChart } from '@/components/admin/charts/skintone-donut-chart';
-import { QuizSummaryCard } from '@/components/admin/charts/quiz-summary-card';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export const metadata: Metadata = {
   title: 'Dashboard Statistik | Admin Kainara',
-  description: 'Ringkasan analitik pengguna, scan motif, dan kuis Kainara.',
+  description: 'Ringkasan analitik pengguna dan pemindaian motif tapis Lampung.',
 };
 
 interface AdminDashboardPageProps {
@@ -53,7 +51,7 @@ async function DashboardContent({ searchParams }: AdminDashboardPageProps) {
           Selamat Datang, {displayName}!
         </h1>
         <p className="mt-2 text-xs sm:text-sm text-[#7A3A3A] dark:text-[#D9C3B5] leading-relaxed max-w-2xl">
-          Pantau statistik aktivitas pemindaian motif tapis Lampung, tren warna kulit, serta performa edukasi kuis Kainara secara real-time.
+          Pantau statistik aktivitas pemindaian motif tapis Lampung dan tren warna kulit secara real-time.
         </p>
       </div>
 
@@ -88,16 +86,13 @@ async function DashboardContent({ searchParams }: AdminDashboardPageProps) {
         <SkintoneDonutChart data={stats.skintoneDistribution} />
       </div>
 
-      {/* Ringkasan Performa Kuis */}
-      <QuizSummaryCard stats={stats.quizStats} />
-
       {/* Akses Cepat Modul Konten */}
       <div className="space-y-4 pt-4 border-t border-[#E8D8C8] dark:border-[rgba(246,233,220,0.16)]">
         <h2 className="font-heading text-lg font-bold text-[#5E0F11] dark:text-[#F6E9DC]">
           Kelola Data Konten
         </h2>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Link
             href="/admin/motif"
             className="group rounded-2xl border border-[#E8D8C8] bg-white p-5 shadow-xs transition-all hover:-translate-y-1 hover:shadow-md dark:bg-[#2A1415] dark:border-[rgba(246,233,220,0.16)]"
@@ -131,24 +126,6 @@ async function DashboardContent({ searchParams }: AdminDashboardPageProps) {
             </h3>
             <p className="mt-1 text-xs text-[#7A3A3A] dark:text-[#D9C3B5]">
               Paduan busana adat, formal, kasual, dan modern.
-            </p>
-          </Link>
-
-          <Link
-            href="/admin/kuis"
-            className="group rounded-2xl border border-[#E8D8C8] bg-white p-5 shadow-xs transition-all hover:-translate-y-1 hover:shadow-md dark:bg-[#2A1415] dark:border-[rgba(246,233,220,0.16)]"
-          >
-            <div className="flex items-center justify-between">
-              <div className="size-10 rounded-xl bg-[#FFF8F0] dark:bg-[#3A1D1E] flex items-center justify-center text-[#7A1212] dark:text-[#E8C36A]">
-                <HelpCircle className="size-5" />
-              </div>
-              <ArrowUpRight className="size-4 text-[#7A3A3A] group-hover:text-[#96640F] transition-colors dark:text-[#D9C3B5]" />
-            </div>
-            <h3 className="mt-4 font-sans text-base font-bold text-[#5E0F11] group-hover:text-[#96640F] transition-colors dark:text-[#F6E9DC]">
-              Soal Kuis
-            </h3>
-            <p className="mt-1 text-xs text-[#7A3A3A] dark:text-[#D9C3B5]">
-              Bank soal kebudayaan dan pilihan jawaban.
             </p>
           </Link>
 

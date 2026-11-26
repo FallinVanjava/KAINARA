@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import { getMotifs } from '@/lib/queries/motifs';
-import { MotifMatchingQuiz } from '@/components/quiz/motif-matching-quiz';
+import { MotifMatchingQuiz, type MatchingMotif } from '@/components/quiz/motif-matching-quiz';
 
 export const metadata: Metadata = {
   title: 'Kuis Pencocokan Motif Tapis | Kainara',
@@ -13,9 +12,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function KuisPage() {
-  const { items } = await getMotifs({ limit: 4 });
+const STATIC_QUIZ_MOTIFS: MatchingMotif[] = [
+  { id: 'jung-sarat', nama: 'Tapis Jung Sarat', gambar_url: null, daerah_asal: 'Menggala' },
+  { id: 'raja-medal', nama: 'Tapis Raja Medal', gambar_url: null, daerah_asal: 'Way Kanan' },
+  { id: 'pucuk-rebung', nama: 'Tapis Pucuk Rebung', gambar_url: null, daerah_asal: 'Kalianda' },
+  { id: 'inuh', nama: 'Tapis Inuh', gambar_url: null, daerah_asal: 'Pesisir Barat' },
+];
 
+export default function KuisPage() {
   return (
     <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8 sm:py-14">
       <header className="mb-10 max-w-3xl">
@@ -25,7 +29,7 @@ export default async function KuisPage() {
           Tarik garis penghubung dari gambar motif di sebelah kiri ke nama motif yang sesuai di sebelah kanan.
         </p>
       </header>
-      <MotifMatchingQuiz motifs={items} />
+      <MotifMatchingQuiz motifs={STATIC_QUIZ_MOTIFS} />
     </div>
   );
 }

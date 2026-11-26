@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { submitQuizAttempt } from '@/app/actions/quiz';
 import Image from 'next/image';
 import { Check, RotateCcw, X } from 'lucide-react';
 
@@ -25,7 +24,6 @@ export function MotifMatchingQuiz({ motifs }: MotifMatchingQuizProps) {
   const [connections, setConnections] = useState<Record<string, string>>({});
   const [selectedMotif, setSelectedMotif] = useState<string | null>(null);
   const [result, setResult] = useState(false);
-  const [saveError, setSaveError] = useState(false);
   const [points, setPoints] = useState<Record<string, { from: Point; to: Point }>>({});
   const canvasRef = useRef<HTMLDivElement>(null);
 
@@ -92,18 +90,14 @@ export function MotifMatchingQuiz({ motifs }: MotifMatchingQuizProps) {
     });
   };
 
-  const finish = async () => {
+  const finish = () => {
     setResult(true);
-    setSaveError(false);
-    const response = await submitQuizAttempt(Math.round((score / motifs.length) * 100), motifs.length);
-    if (!response.success) setSaveError(true);
   };
 
   const reset = () => {
     setConnections({});
     setSelectedMotif(null);
     setResult(false);
-    setSaveError(false);
   };
 
   const path = (from: Point, to: Point) => {
@@ -270,7 +264,6 @@ export function MotifMatchingQuiz({ motifs }: MotifMatchingQuizProps) {
                 : 'Pelajari kembali nama motif dan daerah asalnya melalui katalog KAINARA.'}
             </p>
 
-            {saveError && <p role="status" className="mt-3 text-sm text-[#B3261E]">Skor belum tersimpan. Silakan ulangi kuis nanti.</p>}
             <button
               type="button"
               onClick={reset}

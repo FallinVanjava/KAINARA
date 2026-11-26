@@ -75,7 +75,7 @@ Mengambil semua motif kain tapis yang telah diterbitkan admin:
 ```typescript
 const { data: motifs, error } = await supabase
   .from('motifs')
-  .select('id, nama, slug, deskripsi, filosofi, sejarah, asal_daerah, gambar_url, created_at')
+  .select('id, nama, slug, deskripsi, makna_filosofi, sejarah, daerah_asal, warna_dominan, gambar_url, created_at')
   .eq('is_published', true)
   .order('nama', { ascending: true });
 ```
@@ -95,20 +95,24 @@ Mengambil rekomendasi motif tapis yang paling cocok dengan skintone pengguna:
 const { data: recommendations, error } = await supabase
   .from('motif_skintone_match')
   .select(`
-    skor,
-    keterangan,
+    skor_kecocokan,
+    catatan,
     motif:motifs!inner (
       id,
       nama,
       slug,
       deskripsi,
+      makna_filosofi,
+      sejarah,
+      daerah_asal,
+      warna_dominan,
       gambar_url,
       is_published
     )
   `)
   .eq('skintone_id', userSkintoneId)
   .eq('motif.is_published', true)
-  .order('skor', { ascending: false });
+  .order('skor_kecocokan', { ascending: false });
 ```
 
 ### D. Rekomendasi Outfit (`outfits`) & Motif Terkait

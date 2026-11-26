@@ -1,8 +1,8 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 @plugin "tailwindcss-motion";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "./kainara-hero.css";
 
 @custom-variant dark (&:is(.dark *));
 

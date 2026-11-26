@@ -8,8 +8,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/s
 import { useState } from 'react';
 
 const NAV_LINKS = [
-  { href: '/#beranda', label: 'Beranda' },
-  { href: '/motif', label: 'Jelajah Motif' },
+  { href: '/#top', label: 'Beranda' },
   { href: '/kuis', label: 'Kuesioner' },
 ];
 

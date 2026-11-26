@@ -6,7 +6,6 @@ import {
   LayoutDashboard,
   Layers,
   Shirt,
-  HelpCircle,
   Users,
   ExternalLink,
 } from 'lucide-react';
@@ -15,7 +14,6 @@ const MENU_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
   { href: '/admin/motif', label: 'Motif Tapis', icon: Layers, exact: false },
   { href: '/admin/outfit', label: 'Rekomendasi Outfit', icon: Shirt, exact: false },
-  { href: '/admin/kuis', label: 'Soal Kuis', icon: HelpCircle, exact: false },
   { href: '/admin/pengguna', label: 'Pengguna', icon: Users, exact: false },
 ];
 
