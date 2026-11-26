@@ -24,7 +24,7 @@ export function LandingMotion() {
     const handleAnchorClick = (e: MouseEvent) => {
       const target = (e.target as HTMLElement).closest('a');
       const href = target?.getAttribute('href');
-      if (href && href.startsWith('#') && href !== '#' && href !== '#download') {
+      if (href && href.startsWith('#') && href !== '#') {
         const el = document.querySelector(href);
         if (el) {
           e.preventDefault();

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -31,11 +32,20 @@ export function AdminSidebar({ onNavigate }: AdminSidebarProps) {
         <Link
           href="/admin"
           onClick={onNavigate}
-          className="font-heading text-2xl font-bold tracking-wider text-[#5E0F11] hover:text-[#96640F] transition-colors dark:text-[#F6E9DC] dark:hover:text-[#E8C36A]"
+          className="flex items-center gap-2.5 group"
         >
-          KAINARA
+          <Image
+            src="/images/icon-kainara.jpeg"
+            alt="Logo KAINARA"
+            width={32}
+            height={32}
+            className="size-8 rounded-lg object-cover"
+          />
+          <span className="font-heading text-2xl font-bold tracking-wider text-[#5E0F11] group-hover:text-[#96640F] transition-colors dark:text-[#F6E9DC] dark:group-hover:text-[#E8C36A]">
+            KAINARA
+          </span>
         </Link>
-        <div className="text-[11px] text-[#7A3A3A] font-medium tracking-wide mt-0.5 dark:text-[#D9C3B5]">
+        <div className="text-[11px] text-[#7A3A3A] font-medium tracking-wide mt-1.5 dark:text-[#D9C3B5]">
           Panel Kelola Budaya
         </div>
       </div>

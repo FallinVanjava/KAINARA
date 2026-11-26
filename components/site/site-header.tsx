@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu } from 'lucide-react';
@@ -22,6 +23,13 @@ export function SiteHeader() {
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
         <Link href="/" className="flex items-center gap-2 group">
+          <Image
+            src="/images/icon-kainara.jpeg"
+            alt="Logo KAINARA"
+            width={32}
+            height={32}
+            className="size-8 rounded-lg object-cover"
+          />
           <span className="font-heading text-xl font-bold tracking-wider text-[#6D0F0F] transition-colors group-hover:text-[#540B0B] dark:text-[#F6E9DC] dark:group-hover:text-[#E8C36A]">
             KAINARA
           </span>

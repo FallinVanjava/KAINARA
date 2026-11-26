@@ -10,6 +10,7 @@ import {
 
 import { MotifMatchingQuiz, type MatchingMotif } from "@/components/quiz/motif-matching-quiz"
 import { LandingMotion } from "@/components/site/landing-motion"
+import { LandingHeader } from "@/components/site/landing-header"
 
 /* ============================================================================
    CONTOH MOTIF TAPIS (Statis, bukan data admin)
@@ -91,46 +92,8 @@ function HeroSection() {
         className="pointer-events-none absolute -top-40 -left-20 size-[450px] rounded-full bg-[#F7E2C3]/60 blur-3xl"
       />
 
-      {/* Header Statis Bersih — Tanpa Fitur Masuk/Login */}
-      <header className="relative z-30 w-full shrink-0 border-b border-[#262525]/8 bg-[#FEFEFE]/85 backdrop-blur-sm">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
-          <Link href="#top" className="flex items-center gap-2.5" aria-label="Beranda KAINARA">
-            <span className="grid size-8 place-items-center rounded-lg bg-[#6D0F0F] text-[11px] font-bold text-[#E5C77B]">
-              K
-            </span>
-            <div className="flex flex-col">
-              <span className="font-heading text-lg font-bold tracking-tight text-[#6D0F0F] leading-tight">
-                KAINARA
-              </span>
-              <span className="text-[9px] font-semibold tracking-wider text-[#C9A24D] uppercase">
-                Wastra Lampung
-              </span>
-            </div>
-          </Link>
-
-          <nav aria-label="Navigasi utama" className="flex items-center gap-4 text-sm font-medium text-[#57524E] sm:gap-6">
-            <a href="#top" className="hidden hover:text-[#6D0F0F] sm:inline">
-              Beranda
-            </a>
-            <a href="#fitur-aplikasi" className="hidden hover:text-[#6D0F0F] md:inline">
-              Fitur Aplikasi
-            </a>
-            <a href="#galeri-motif" className="hover:text-[#6D0F0F]">
-              Contoh Motif
-            </a>
-            <a href="#kuesioner" className="hover:text-[#6D0F0F]">
-              Kuis Motif
-            </a>
-            <a
-              href="#download"
-              className="inline-flex items-center gap-1.5 rounded-full bg-[#6D0F0F] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#560B0B]"
-            >
-              <Download className="size-3.5" />
-              Download Aplikasi
-            </a>
-          </nav>
-        </div>
-      </header>
+      {/* Header dengan navigasi responsif */}
+      <LandingHeader />
 
       {/* Konten Hero (Fit Layar Desktop) */}
       <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 items-center px-5 py-6 sm:px-8 lg:py-2">
@@ -402,9 +365,13 @@ function SiteFooterMinimal() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <span className="grid size-8 place-items-center rounded-lg bg-[#6D0F0F] text-[11px] font-bold text-[#E5C77B]">
-              K
-            </span>
+            <Image
+              src="/images/icon-kainara.jpeg"
+              alt="Logo KAINARA"
+              width={36}
+              height={36}
+              className="size-9 rounded-lg object-cover"
+            />
             <div>
               <p className="font-heading text-base font-bold text-[#6D0F0F]">
                 KAINARA

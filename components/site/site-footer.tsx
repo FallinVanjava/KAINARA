@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/site/theme-toggle';
 
@@ -7,9 +8,18 @@ export function SiteFooter() {
       <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8">
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
           <div className="space-y-3 sm:col-span-2">
-            <span className="font-heading text-2xl font-bold tracking-wider text-[#5E0F11] dark:text-[#F6E9DC]">
-              KAINARA
-            </span>
+            <div className="flex items-center gap-2.5">
+              <Image
+                src="/images/icon-kainara.jpeg"
+                alt="Logo KAINARA"
+                width={36}
+                height={36}
+                className="size-9 rounded-lg object-cover"
+              />
+              <span className="font-heading text-2xl font-bold tracking-wider text-[#5E0F11] dark:text-[#F6E9DC]">
+                KAINARA
+              </span>
+            </div>
             <p className="max-w-sm text-sm leading-relaxed text-[#7A3A3A] dark:text-[#D9C3B5]">
               Platform edukasi dan eksplorasi motif kain tapis Lampung. Menghubungkan tradisi luhur tapis dengan teknologi pencocokan skintone dan rekomendasi outfit busana modern.
             </p>
