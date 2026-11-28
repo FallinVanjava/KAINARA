@@ -141,7 +141,6 @@ export async function saveOutfit(
 
     // 5. Revalidasi cache
     revalidatePath('/');
-    revalidatePath('/motif');
     revalidatePath('/admin/outfit');
 
     return {
@@ -178,7 +177,6 @@ export async function togglePublishOutfit(
     }
 
     revalidatePath('/');
-    revalidatePath('/motif');
     revalidatePath('/admin/outfit');
 
     return { success: true };
@@ -220,7 +218,6 @@ export async function deleteOutfit(id: string): Promise<ActionResponse> {
     }
 
     revalidatePath('/');
-    revalidatePath('/motif');
     revalidatePath('/admin/outfit');
 
     return { success: true };

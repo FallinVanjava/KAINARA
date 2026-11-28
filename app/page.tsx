@@ -75,7 +75,7 @@ function HeroSection() {
   return (
     <section
       id="top"
-      className="relative flex min-h-dvh flex-col justify-between overflow-hidden bg-[#FEFEFE] lg:h-dvh lg:max-h-dvh"
+      className="relative flex min-h-dvh flex-col justify-between overflow-hidden bg-[#FEFEFE] pt-16 lg:h-dvh lg:max-h-dvh"
     >
       {/* Background ilustrasi kain Tapis dan Rumah Adat */}
       <div

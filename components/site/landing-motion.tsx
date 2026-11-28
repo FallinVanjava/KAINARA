@@ -28,7 +28,7 @@ export function LandingMotion() {
         const el = document.querySelector(href);
         if (el) {
           e.preventDefault();
-          lenis.scrollTo(el as HTMLElement, { offset: -20, duration: 1.2 });
+          lenis.scrollTo(el as HTMLElement, { offset: -80, duration: 1.2 });
         }
       }
     };

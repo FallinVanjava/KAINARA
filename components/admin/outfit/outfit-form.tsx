@@ -212,7 +212,7 @@ export function OutfitForm({
                 Motif Tapis Terkait
               </h2>
               <p className="text-xs text-[#7A3A3A] dark:text-[#D9C3B5] mt-0.5">
-                Pilih motif tapis yang cocok dipadukan dengan busana ini. Rekomendasi outfit ini akan tampil di halaman detail motif bersangkutan.
+                Pilih motif tapis yang cocok dipadukan dengan busana ini. Data outfit dan motif terkait digunakan oleh aplikasi mobile.
               </p>
             </div>
 

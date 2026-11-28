@@ -18,7 +18,7 @@ export function LandingHeader() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="relative z-30 w-full shrink-0 border-b border-[#262525]/8 bg-[#FEFEFE]/85 backdrop-blur-sm">
+    <header className="fixed inset-x-0 top-0 z-40 w-full border-b border-[#262525]/8 bg-[#FEFEFE]/85 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
         <Link href="#top" className="flex items-center gap-2.5" aria-label="Beranda KAINARA">
           <Image

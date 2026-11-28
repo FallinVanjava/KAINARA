@@ -195,7 +195,7 @@ export function MotifForm({
                   Slug URL <span className="text-destructive">*</span>
                 </Label>
                 <span className="text-[10px] text-[#7A3A3A] dark:text-[#D9C3B5]">
-                  Digunakan pada tautan: /motif/<strong>{currentSlug || 'slug'}</strong>
+                  ID motif aplikasi: <strong>{currentSlug || 'slug'}</strong>
                 </span>
               </div>
               <Input

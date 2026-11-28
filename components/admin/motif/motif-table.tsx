@@ -13,7 +13,6 @@ import {
   ArrowUpDown,
   ArrowLeft,
   ArrowRight,
-  ExternalLink,
 } from 'lucide-react';
 import type { Motif } from '@/types/database';
 import { togglePublishMotif, deleteMotif } from '@/app/actions/motif';
@@ -91,7 +90,7 @@ export function MotifTable({
   const handleTogglePublish = (motif: Motif) => {
     const nextStatus = !motif.is_published;
     startTransition(async () => {
-      const res = await togglePublishMotif(motif.id, nextStatus, motif.slug);
+      const res = await togglePublishMotif(motif.id, nextStatus);
       if (res.success) {
         toast.success(
           nextStatus
@@ -217,22 +216,11 @@ export function MotifTable({
                       </div>
                     </TableCell>
 
-                    {/* Nama Motif & Link Publik */}
+                    {/* Nama Motif & Slug */}
                     <TableCell className="font-medium text-[#5E0F11] dark:text-[#F6E9DC]">
                       <div className="font-semibold text-sm">{motif.nama}</div>
-                      <div className="flex items-center gap-2 text-[11px] text-[#7A3A3A] dark:text-[#D9C3B5]">
-                        <span>/{motif.slug}</span>
-                        {motif.is_published && (
-                          <Link
-                            href={`/motif/${motif.slug}`}
-                            target="_blank"
-                            className="inline-flex items-center gap-0.5 text-[#96640F] hover:underline dark:text-[#E8C36A]"
-                            title="Buka halaman publik"
-                          >
-                            <span>Lihat</span>
-                            <ExternalLink className="size-2.5" />
-                          </Link>
-                        )}
+                      <div className="text-[11px] text-[#7A3A3A] dark:text-[#D9C3B5]">
+                        <span>id: {motif.slug}</span>
                       </div>
                     </TableCell>
 

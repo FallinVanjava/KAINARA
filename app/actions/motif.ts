@@ -210,8 +210,6 @@ export async function saveMotif(
 
     // 5. Revalidasi halaman terkait
     revalidatePath('/');
-    revalidatePath('/motif');
-    revalidatePath(`/motif/${data.slug}`);
     revalidatePath('/admin/motif');
 
     return {
@@ -229,8 +227,7 @@ export async function saveMotif(
  */
 export async function togglePublishMotif(
   id: string,
-  is_published: boolean,
-  slug?: string
+  is_published: boolean
 ): Promise<ActionResponse> {
   try {
     await requireAdmin();
@@ -249,8 +246,6 @@ export async function togglePublishMotif(
     }
 
     revalidatePath('/');
-    revalidatePath('/motif');
-    if (slug) revalidatePath(`/motif/${slug}`);
     revalidatePath('/admin/motif');
 
     return { success: true };
@@ -292,8 +287,6 @@ export async function deleteMotif(id: string): Promise<ActionResponse> {
     }
 
     revalidatePath('/');
-    revalidatePath('/motif');
-    if (motif?.slug) revalidatePath(`/motif/${motif.slug}`);
     revalidatePath('/admin/motif');
 
     return { success: true };
