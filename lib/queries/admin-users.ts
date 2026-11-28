@@ -41,7 +41,6 @@ export interface UserScanLog {
 export interface UserDetailResult {
   profile: ProfileWithSkintone;
   scanLogs: UserScanLog[];
-  totalQuizAttempts: number;
 }
 
 export async function getAdminUsers({
@@ -102,7 +101,7 @@ export async function getAdminUsers({
 export async function getUserDetail(id: string): Promise<UserDetailResult | null> {
   const supabase = await createClient();
 
-  const [profileRes, scanRes, quizRes] = await Promise.all([
+  const [profileRes, scanRes] = await Promise.all([
     supabase
       .from('profiles')
       .select('*, skintone:skintones!profiles_skintone_terakhir_fkey(*)')
@@ -114,10 +113,6 @@ export async function getUserDetail(id: string): Promise<UserDetailResult | null
       .eq('user_id', id)
       .order('created_at', { ascending: false })
       .limit(20),
-    supabase
-      .from('quiz_attempts')
-      .select('id', { count: 'exact', head: true })
-      .eq('user_id', id),
   ]);
 
   if (profileRes.error || !profileRes.data) {
@@ -127,6 +122,5 @@ export async function getUserDetail(id: string): Promise<UserDetailResult | null
   return {
     profile: profileRes.data as unknown as ProfileWithSkintone,
     scanLogs: (scanRes.data as unknown as UserScanLog[]) || [],
-    totalQuizAttempts: quizRes.count ?? 0,
   };
 }

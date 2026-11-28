@@ -140,35 +140,6 @@ const { data: outfits, error } = await supabase
   .order('created_at', { ascending: false });
 ```
 
-### E. Bank Soal Kuis Acak (RPC `get_random_quiz`)
-Untuk sesi kuis interaktif di mobile, panggil fungsi RPC bawaan yang telah mengacak 10 soal terbit secara otomatis:
-```typescript
-// Mengambil 10 soal acak
-const { data: quizQuestions, error } = await supabase.rpc('get_random_quiz', {
-  p_limit: 10,
-});
-```
-
-*Struktur Objek `quiz_questions`:*
-```json
-{
-  "id": "123e4567-e89b-12d3-a456-426614174000",
-  "pertanyaan": "Motif Tapis Pucuk Rebung melambangkan apa dalam falsafah hidup masyarakat Lampung?",
-  "opsi": [
-    "Kekuatan dan kemakmuran yang terus bertumbuh",
-    "Perjalanan leluhur mengarungi samudra",
-    "Hubungan manusia dengan alam gaib",
-    "Perniagaan rempah-rempah nusantara"
-  ],
-  "jawaban_benar": 0,
-  "penjelasan": "Pucuk rebung merupakan simbol bambu muda yang terus tumbuh tegak ke atas...",
-  "motif_id": "987fcdeb-51a2-43f1-b890-123456789abc"
-}
-```
-> **Catatan Penting:** Kolom `jawaban_benar` adalah indeks array berbasis **0-based** (`0` merujuk ke opsi pertama, `1` ke opsi kedua, dst.).
-
----
-
 ## 4. Pencatatan Pemindaian Kamera (`scan_logs`)
 
 Tabel `scan_logs` digunakan untuk mencatat riwayat pemindaian kamera (model computer vision deteksi motif atau deteksi warna kulit).
@@ -238,23 +209,7 @@ const { data: logs, error } = await supabase
 
 ---
 
-## 5. Pencatatan Hasil Sesi Kuis (`quiz_attempts`)
-
-Setelah pengguna menyelesaikan sesi kuis, kirimkan skor ke tabel `quiz_attempts`:
-
-```typescript
-const { error } = await supabase
-  .from('quiz_attempts')
-  .insert({
-    user_id: currentUser ? currentUser.id : null, // Tamu tanpa akun boleh null
-    skor: 8,  // Jumlah jawaban benar
-    total: 10, // Total soal dalam kuis
-  });
-```
-
----
-
-## 6. Aturan Keamanan & RLS (Row Level Security)
+## 5. Aturan Keamanan & RLS (Row Level Security)
 
 1. **Akses `scan_logs`:**
    - Pengguna hanya diizinkan membaca (`SELECT`) dan menulis (`INSERT`) data yang memiliki `user_id = auth.uid()`.
@@ -264,7 +219,7 @@ const { error } = await supabase
 3. **Pencegahan Mutasi Role:**
    - Pengguna biasa tidak dapat menaikkan hak akses dirinya menjadi `admin`. Upaya manipulasi field `role` di tabel `profiles` akan diabaikan atau memicu exception dari fungsi `protect_profile_columns()`.
 4. **Penghapusan Data:**
-   - Pengguna aplikasi mobile tidak memiliki izin menghapus baris di `scan_logs` atau `quiz_attempts` (penghapusan hanya dapat dilakukan oleh admin).
+   - Pengguna aplikasi mobile tidak memiliki izin menghapus baris di `scan_logs` (penghapusan hanya dapat dilakukan oleh admin).
 
 ---
 

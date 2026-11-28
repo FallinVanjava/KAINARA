@@ -2,10 +2,7 @@ import {
   Users,
   Layers,
   Palette,
-  HelpCircle,
-  Percent,
   Shirt,
-  UserPlus,
 } from 'lucide-react';
 import type { DashboardSummary } from '@/lib/queries/admin-stats';
 
@@ -16,8 +13,8 @@ interface KpiCardsProps {
 export function KpiCards({ summary }: KpiCardsProps) {
   if (!summary) {
     return (
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {[...Array(6)].map((_, i) => (
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[...Array(4)].map((_, i) => (
           <div
             key={i}
             className="h-28 rounded-2xl border border-[#E8D8C8] bg-white p-5 animate-pulse dark:bg-[#2A1415] dark:border-[rgba(246,233,220,0.16)]"
@@ -33,7 +30,6 @@ export function KpiCards({ summary }: KpiCardsProps) {
       value: summary.total_pengguna,
       subtext: `+${summary.pengguna_baru_7hari} baru (7 hari)`,
       icon: Users,
-      badgeIcon: UserPlus,
     },
     {
       title: 'Scan Motif Tapis',
@@ -48,18 +44,6 @@ export function KpiCards({ summary }: KpiCardsProps) {
       icon: Palette,
     },
     {
-      title: 'Percobaan Kuis',
-      value: summary.total_percobaan_kuis,
-      subtext: 'Total sesi kuis kebudayaan dimainkan',
-      icon: HelpCircle,
-    },
-    {
-      title: 'Rata-Rata Skor Kuis',
-      value: `${summary.rata_rata_skor_kuis}%`,
-      subtext: 'Tingkat akurasi pemahaman pengguna',
-      icon: Percent,
-    },
-    {
       title: 'Koleksi Budaya',
       value: `${summary.total_motif} Motif`,
       subtext: `${summary.total_outfit} Rekomendasi Outfit`,
@@ -68,7 +52,7 @@ export function KpiCards({ summary }: KpiCardsProps) {
   ];
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {cards.map((card, i) => {
         const Icon = card.icon;
         return (

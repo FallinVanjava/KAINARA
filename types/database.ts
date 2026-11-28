@@ -225,79 +225,6 @@ export interface Database {
           }
         ];
       };
-      quiz_questions: {
-        Row: {
-          id: string;
-          pertanyaan: string;
-          opsi: string[];
-          jawaban_benar: number; // 0-indexed
-          penjelasan: string | null;
-          motif_id: string | null;
-          is_published: boolean;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          pertanyaan: string;
-          opsi: string[] | Json;
-          jawaban_benar: number; // 0-indexed
-          penjelasan?: string | null;
-          motif_id?: string | null;
-          is_published?: boolean;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          pertanyaan?: string;
-          opsi?: string[] | Json;
-          jawaban_benar?: number; // 0-indexed
-          penjelasan?: string | null;
-          motif_id?: string | null;
-          is_published?: boolean;
-          created_at?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'quiz_questions_motif_id_fkey';
-            columns: ['motif_id'];
-            isOneToOne: false;
-            referencedRelation: 'motifs';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
-      quiz_attempts: {
-        Row: {
-          id: string;
-          user_id: string | null;
-          skor: number;
-          total: number;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          user_id?: string | null;
-          skor: number;
-          total: number;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          user_id?: string | null;
-          skor?: number;
-          total?: number;
-          created_at?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'quiz_attempts_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
       login_history: {
         Row: {
           id: string;
@@ -387,12 +314,6 @@ export interface Database {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
       };
-      get_random_quiz: {
-        Args: {
-          p_limit?: number;
-        };
-        Returns: Database['public']['Tables']['quiz_questions']['Row'][];
-      };
       admin_dashboard_summary: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -400,8 +321,6 @@ export interface Database {
           pengguna_baru_7hari: number;
           total_scan_motif: number;
           total_scan_skintone: number;
-          total_percobaan_kuis: number;
-          rata_rata_skor_kuis: number;
           total_motif: number;
           total_outfit: number;
         };
@@ -438,16 +357,6 @@ export interface Database {
           total: number;
         }[];
       };
-      admin_quiz_stats: {
-        Args: {
-          p_start?: string;
-          p_end?: string;
-        };
-        Returns: {
-          total_percobaan: number;
-          rata_rata_skor_persen: number;
-        }[];
-      };
     };
     Enums: {
       user_role: UserRole;
@@ -474,6 +383,4 @@ export type Motif = Tables<'motifs'>;
 export type MotifSkintoneMatch = Tables<'motif_skintone_match'>;
 export type Outfit = Tables<'outfits'>;
 export type OutfitMotif = Tables<'outfit_motif'>;
-export type QuizQuestion = Tables<'quiz_questions'>;
-export type QuizAttempt = Tables<'quiz_attempts'>;
 export type ScanLog = Tables<'scan_logs'>;

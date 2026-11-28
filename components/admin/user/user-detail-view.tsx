@@ -12,7 +12,6 @@ import {
   PowerOff,
   Palette,
   Layers,
-  Award,
   Calendar,
   Clock,
   Sparkles,
@@ -38,7 +37,7 @@ interface UserDetailViewProps {
 
 export function UserDetailView({ data, currentAdminId }: UserDetailViewProps) {
   const router = useRouter();
-  const { profile, scanLogs, totalQuizAttempts } = data;
+  const { profile, scanLogs } = data;
   const isSelf = profile.id === currentAdminId;
 
   const [isProcessing, setIsProcessing] = useState(false);
@@ -196,7 +195,7 @@ export function UserDetailView({ data, currentAdminId }: UserDetailViewProps) {
       </div>
 
       {/* Grid Informasi & Statistik */}
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2">
         {/* Card Skintone Terakhir */}
         <div className="rounded-2xl border border-[#E8D8C8] bg-white p-5 shadow-xs dark:bg-[#2A1415] dark:border-[rgba(246,233,220,0.16)] space-y-3">
           <div className="flex items-center gap-2 text-[#7A1212] dark:text-[#E8C36A]">
@@ -224,23 +223,6 @@ export function UserDetailView({ data, currentAdminId }: UserDetailViewProps) {
               Pengguna belum pernah melakukan pemindaian warna kulit.
             </div>
           )}
-        </div>
-
-        {/* Card Percobaan Kuis */}
-        <div className="rounded-2xl border border-[#E8D8C8] bg-white p-5 shadow-xs dark:bg-[#2A1415] dark:border-[rgba(246,233,220,0.16)] space-y-3">
-          <div className="flex items-center gap-2 text-[#7A1212] dark:text-[#E8C36A]">
-            <Award className="size-4.5" />
-            <h3 className="font-heading text-sm font-bold">Aktivitas Kuis</h3>
-          </div>
-
-          <div className="pt-1">
-            <div className="font-heading text-3xl font-extrabold text-[#7A1212] dark:text-[#E8C36A]">
-              {totalQuizAttempts}
-            </div>
-            <p className="text-xs text-[#7A3A3A] dark:text-[#D9C3B5] mt-1">
-              Total sesi kuis kebudayaan yang telah diselesaikan.
-            </p>
-          </div>
         </div>
 
         {/* Card Tanggal Bergabung */}

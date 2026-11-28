@@ -8,8 +8,6 @@ export interface DashboardSummary {
   pengguna_baru_7hari: number;
   total_scan_motif: number;
   total_scan_skintone: number;
-  total_percobaan_kuis: number;
-  rata_rata_skor_kuis: number;
   total_motif: number;
   total_outfit: number;
 }

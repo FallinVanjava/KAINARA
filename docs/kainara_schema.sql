@@ -97,30 +97,6 @@ create table if not exists public.outfit_motif (
   primary key (outfit_id, motif_id)
 );
 
--- ---------- quiz_questions ----------
--- opsi         : array JSON berisi teks pilihan, mis. ["A","B","C","D"]
--- jawaban_benar: INDEKS pilihan yang benar, dimulai dari 0
-create table if not exists public.quiz_questions (
-  id            uuid primary key default gen_random_uuid(),
-  pertanyaan    text not null unique,
-  opsi          jsonb not null check (jsonb_typeof(opsi) = 'array'),
-  jawaban_benar integer not null check (jawaban_benar >= 0),
-  penjelasan    text,
-  motif_id      uuid references public.motifs (id) on delete set null,
-  is_published  boolean not null default true,
-  created_at    timestamptz not null default now()
-);
-
--- ---------- quiz_attempts ----------
-create table if not exists public.quiz_attempts (
-  id         uuid primary key default gen_random_uuid(),
-  user_id    uuid references public.profiles (id) on delete set null,  -- null = tamu
-  skor       integer not null check (skor >= 0),
-  total      integer not null check (total > 0),
-  created_at timestamptz not null default now(),
-  check (skor <= total)
-);
-
 -- ---------- scan_logs ----------
 -- hasil (jsonb), contoh:
 --   tipe 'motif'    : {"confidence":0.93,"label":"pucuk-rebung"}
@@ -140,9 +116,6 @@ create index if not exists idx_motifs_published        on public.motifs (is_publ
 create index if not exists idx_outfits_published       on public.outfits (is_published);
 create index if not exists idx_outfit_motif_motif      on public.outfit_motif (motif_id);
 create index if not exists idx_match_skintone          on public.motif_skintone_match (skintone_id);
-create index if not exists idx_quiz_questions_pub      on public.quiz_questions (is_published);
-create index if not exists idx_quiz_attempts_created   on public.quiz_attempts (created_at);
-create index if not exists idx_quiz_attempts_user      on public.quiz_attempts (user_id);
 create index if not exists idx_scan_logs_created       on public.scan_logs (created_at);
 create index if not exists idx_scan_logs_user          on public.scan_logs (user_id);
 create index if not exists idx_scan_logs_tipe_motif    on public.scan_logs (tipe, motif_id);
@@ -283,19 +256,6 @@ create trigger trg_scan_last_skintone
   after insert on public.scan_logs
   for each row execute function public.update_last_skintone();
 
--- Ambil soal kuis acak (dipakai halaman /kuis di web dan bisa dipakai mobile).
-create or replace function public.get_random_quiz(p_limit integer default 10)
-returns setof public.quiz_questions
-language sql
-stable
-as $$
-  select * from public.quiz_questions
-  where is_published
-  order by random()
-  limit greatest(p_limit, 1);
-$$;
-
-
 -- =====================================================================
 -- 3. ROW LEVEL SECURITY
 -- =====================================================================
@@ -305,8 +265,6 @@ alter table public.motifs               enable row level security;
 alter table public.motif_skintone_match enable row level security;
 alter table public.outfits              enable row level security;
 alter table public.outfit_motif         enable row level security;
-alter table public.quiz_questions       enable row level security;
-alter table public.quiz_attempts        enable row level security;
 alter table public.scan_logs            enable row level security;
 
 -- ---------- profiles ----------
@@ -365,25 +323,6 @@ create policy "outfit_motif_select_all" on public.outfit_motif
 drop policy if exists "outfit_motif_admin_write" on public.outfit_motif;
 create policy "outfit_motif_admin_write" on public.outfit_motif
   for all using (public.is_admin()) with check (public.is_admin());
-
--- ---------- quiz_questions ----------
-drop policy if exists "quiz_questions_select_published" on public.quiz_questions;
-create policy "quiz_questions_select_published" on public.quiz_questions
-  for select using (is_published or public.is_admin());
-
-drop policy if exists "quiz_questions_admin_write" on public.quiz_questions;
-create policy "quiz_questions_admin_write" on public.quiz_questions
-  for all using (public.is_admin()) with check (public.is_admin());
-
--- ---------- quiz_attempts ----------
--- Tamu (tanpa login) boleh menyimpan hasil dengan user_id null.
-drop policy if exists "quiz_attempts_insert" on public.quiz_attempts;
-create policy "quiz_attempts_insert" on public.quiz_attempts
-  for insert with check (user_id is null or user_id = auth.uid());
-
-drop policy if exists "quiz_attempts_select_own_or_admin" on public.quiz_attempts;
-create policy "quiz_attempts_select_own_or_admin" on public.quiz_attempts
-  for select using (user_id = auth.uid() or public.is_admin());
 
 -- ---------- scan_logs ----------
 drop policy if exists "scan_logs_insert_own" on public.scan_logs;
