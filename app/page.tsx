@@ -13,7 +13,7 @@ import { LandingMotion } from "@/components/site/landing-motion"
 import { LandingHeader } from "@/components/site/landing-header"
 
 /* ============================================================================
-   CONTOH MOTIF TAPIS (Statis, bukan data admin)
+   RAGAM MOTIF TAPIS LAMPUNG
    ============================================================================ */
 
 interface ExampleMotif {
@@ -21,8 +21,9 @@ interface ExampleMotif {
   nama: string
   daerah: string
   warna: string
-  hex: string
   filosofi: string
+  gambar: string
+  alt: string
 }
 
 const EXAMPLE_MOTIFS: ExampleMotif[] = [
@@ -31,39 +32,47 @@ const EXAMPLE_MOTIFS: ExampleMotif[] = [
     nama: "Tapis Jung Sarat",
     daerah: "Menggala",
     warna: "Marun & Emas",
-    hex: "#6D0F0F",
-    filosofi: "Simbol keagungan kapal peradaban Pepadun yang membawa kemakmuran dan persatuan keluarga.",
+    filosofi:
+      "Sulaman emas memenuhi permukaan kain dengan tepian segitiga merah, menegaskan keagungan perjalanan Pepadun serta kemakmuran dan persatuan keluarga.",
+    gambar: "/images/jung sarat.jpg",
+    alt: "Kain tapis Jung Sarat dengan sulaman emas dan tepian segitiga merah.",
   },
   {
     id: "raja-medal",
     nama: "Tapis Raja Medal",
     daerah: "Way Kanan",
-    warna: "Navy & Emas",
-    hex: "#17212E",
-    filosofi: "Melambangkan kebijaksanaan pemimpin adat, keteguhan prinsip, dan integritas.",
+    warna: "Merah Marun, Emas & Hitam",
+    filosofi:
+      "Barisan motif geometris berlapis menggambarkan kewibawaan pemimpin adat, keteguhan prinsip, dan integritas yang teratur.",
+    gambar: "/images/raja medal.webp",
+    alt: "Pola geometris Raja Medal dengan kombinasi marun, emas, dan hitam.",
   },
   {
     id: "pucuk-rebung",
     nama: "Tapis Pucuk Rebung",
     daerah: "Kalianda",
-    warna: "Krem & Terakota",
-    hex: "#8A5424",
-    filosofi: "Tunas bambu bertingkat: pertumbuhan tiada henti, kelenturan berpikir, dan kerendahan hati.",
+    warna: "Merah, Emas & Hitam",
+    filosofi:
+      "Deretan tunas bambu yang bertingkat menyimbolkan pertumbuhan tiada henti, kelenturan berpikir, dan kerendahan hati.",
+    gambar: "/images/pucukk rebung.jpg",
+    alt: "Deretan tunas bambu pucuk rebung berwarna emas di atas kain merah.",
   },
   {
     id: "inuh",
     nama: "Tapis Inuh",
     daerah: "Pesisir Barat",
-    warna: "Zaitun & Emas",
-    hex: "#2C4039",
-    filosofi: "Gambaran ombak samudra Saibatin: doa keselamatan, ketenangan, dan harmoni alam.",
+    warna: "Navy, Marun & Emas",
+    filosofi:
+      "Pita bergaris dan figur bersulam membingkai perjalanan di atas ombak, menjadi doa keselamatan dan harmoni alam Samudra.",
+    gambar: "/images/inuh.jpg",
+    alt: "Tapis Inuh dengan pita navy, marun, emas, dan figur bersulam.",
   },
 ]
 
-const QUIZ_MOTIFS: MatchingMotif[] = EXAMPLE_MOTIFS.map(({ id, nama, daerah }) => ({
+const QUIZ_MOTIFS: MatchingMotif[] = EXAMPLE_MOTIFS.map(({ id, nama, daerah, gambar }) => ({
   id,
   nama,
-  gambar_url: null,
+  gambar_url: gambar,
   daerah_asal: daerah,
 }))
 
@@ -168,7 +177,7 @@ function HeroSection() {
 }
 
 /* ============================================================================
-   B. GALERI CONTOH MOTIF (Statis, Hanya Untuk Dilihat)
+   B. GALERI RAGAM MOTIF TAPIS
    ============================================================================ */
 
 function MotifGallerySection() {
@@ -183,25 +192,21 @@ function MotifGallerySection() {
             Empat Motif Lampung yang Bisa Kamu Kenali
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-[#57524E]">
-            Galeri contoh statis untuk memperkenalkan ragam Tapis Lampung. Tidak terhubung ke panel admin.
+            Kenali detail sulaman, warna, dan ragam motif Tapis dari Lampung.
           </p>
         </div>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
-          {EXAMPLE_MOTIFS.map(({ id, nama, daerah, warna, hex, filosofi }) => (
-            <article data-feature-card key={id} className="group overflow-hidden rounded-2xl border border-[#262525]/10 bg-white p-5 transition-shadow hover:shadow-[0_16px_32px_-24px_rgba(38,37,37,0.35)]">
-              <div className="flex items-start gap-4">
-                <span
-                  aria-hidden="true"
-                  className="mt-1 h-14 w-8 shrink-0 rounded-md border border-white shadow-inner"
-                  style={{ backgroundColor: hex }}
-                />
-                <div>
-                  <p className="font-heading text-base font-semibold text-[#262525]">{nama}</p>
-                  <p className="text-xs font-medium text-[#C9A24D]">{daerah} &middot; {warna}</p>
-                </div>
+          {EXAMPLE_MOTIFS.map(({ id, nama, daerah, warna, filosofi, gambar, alt }) => (
+            <article data-feature-card key={id} className="group overflow-hidden rounded-2xl border border-[#262525]/10 bg-white transition-shadow hover:shadow-[0_16px_32px_-24px_rgba(38,37,37,0.35)]">
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#FCF8F3]">
+                <Image src={gambar} alt={alt} fill sizes="(max-width: 640px) 100vw, 50vw" className="object-cover transition-transform duration-300 group-hover:scale-[1.02]" />
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-[#57524E]">{filosofi}</p>
+              <div className="p-5">
+                <p className="font-heading text-base font-semibold text-[#262525]">{nama}</p>
+                <p className="text-xs font-medium text-[#96640F]">{daerah} &middot; {warna}</p>
+                <p className="mt-3 text-sm leading-relaxed text-[#57524E]">{filosofi}</p>
+              </div>
             </article>
           ))}
         </div>
@@ -277,7 +282,7 @@ function AppFeaturesSection() {
         <div className="mt-10 flex items-center gap-3 rounded-2xl border border-[#C9A24D]/35 bg-[#FCF8F3] px-5 py-4">
           <span className="size-1.5 shrink-0 rounded-full bg-[#C9A24D]" aria-hidden="true" />
           <p className="text-xs leading-relaxed text-[#57524E] sm:text-sm">
-            Semua fitur ditujukan untuk edukasi dan pelestarian wastra Lampung. Kuis pada halaman ini memakai contoh motif statis sebagai bahan latihan.
+            Semua fitur mendukung edukasi dan pelestarian wastra Lampung. Kuis ini mengajakmu mengenali ragam motif Tapis.
           </p>
         </div>
       </div>
@@ -286,7 +291,7 @@ function AppFeaturesSection() {
 }
 
 /* ============================================================================
-   B. KUESIONER MOTIF SECTION (Kuis Dinamis Dikelola Admin)
+   D. KUESIONER MOTIF SECTION (Latihan Pencocokan Motif)
    ============================================================================ */
 
 function QuizSection({ motifs }: { motifs: MatchingMotif[] }) {
@@ -301,7 +306,7 @@ function QuizSection({ motifs }: { motifs: MatchingMotif[] }) {
             Kuis Pencocokan Motif Tapis
           </h2>
           <p className="mt-2 text-sm sm:text-base leading-relaxed text-[#57524E]">
-            Hubungkan gambar motif tenun di sebelah kiri ke nama motif yang tepat di sebelah kanan. Soal kuis ini memakai contoh motif statis, bukan data yang dikelola admin.
+            Hubungkan gambar motif tenun di sebelah kiri ke nama motif yang tepat di sebelah kanan. Cocokkan ciri khas tiap motif dengan seksama.
           </p>
         </div>
 
@@ -406,7 +411,7 @@ function SiteFooterMinimal() {
 
         <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-[#262525]/8 pt-6 text-[11px] text-[#6B6F77] sm:flex-row">
           <p>
-            {/* shortcut: tahun statis agar prerender stabil; perbarui manual tiap tahun */}
+            {/* shortcut: tahun agar prerender stabil; perbarui manual tiap tahun */}
             &copy; 2026 KAINARA. Murni edukasi budaya, tanpa jual beli maupun transaksi komersial.
           </p>
           <p>Pelestarian Wastra Tradisional Lampung</p>
@@ -433,13 +438,13 @@ export default function KainaraLandingPage() {
       {/* 1. Hero Section: Pas 1 layar desktop saat pertama dibuka */}
       <HeroSection />
 
-      {/* 2. Galeri Contoh Motif (Statis, edukasi) */}
+      {/* 2. Galeri Contoh Motif */}
       <MotifGallerySection />
 
       {/* 3. Fitur Aplikasi Mobile */}
       <AppFeaturesSection />
 
-      {/* 4. Kuis Motif: Latihan pencocokan berbasis contoh statis */}
+      {/* 4. Kuis Motif: Latihan pencocokan */}
       <QuizSection motifs={QUIZ_MOTIFS} />
 
       {/* 5. Unduh Aplikasi Mobile */}

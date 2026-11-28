@@ -45,15 +45,10 @@ export function SiteFooter() {
 
           <div className="space-y-3">
             <h4 className="text-sm font-semibold uppercase tracking-wider text-[#96640F] dark:text-[#E8C36A]">
-              Pengelola & Tampilan
+              Tampilan
             </h4>
             <ul className="space-y-2 text-sm text-[#7A3A3A] dark:text-[#D9C3B5]">
               <li>
-                <Link href="/admin" className="transition-colors hover:text-[#96640F] dark:hover:text-[#E8C36A]">
-                  Panel Admin
-                </Link>
-              </li>
-              <li className="pt-2">
                 <ThemeToggle />
               </li>
             </ul>

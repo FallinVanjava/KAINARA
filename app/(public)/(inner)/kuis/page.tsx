@@ -12,11 +12,11 @@ export const metadata: Metadata = {
   },
 };
 
-const STATIC_QUIZ_MOTIFS: MatchingMotif[] = [
-  { id: 'jung-sarat', nama: 'Tapis Jung Sarat', gambar_url: null, daerah_asal: 'Menggala' },
-  { id: 'raja-medal', nama: 'Tapis Raja Medal', gambar_url: null, daerah_asal: 'Way Kanan' },
-  { id: 'pucuk-rebung', nama: 'Tapis Pucuk Rebung', gambar_url: null, daerah_asal: 'Kalianda' },
-  { id: 'inuh', nama: 'Tapis Inuh', gambar_url: null, daerah_asal: 'Pesisir Barat' },
+const QUIZ_MOTIFS: MatchingMotif[] = [
+  { id: 'jung-sarat', nama: 'Tapis Jung Sarat', gambar_url: '/images/jung sarat.jpg', daerah_asal: 'Menggala' },
+  { id: 'raja-medal', nama: 'Tapis Raja Medal', gambar_url: '/images/raja medal.webp', daerah_asal: 'Way Kanan' },
+  { id: 'pucuk-rebung', nama: 'Tapis Pucuk Rebung', gambar_url: '/images/pucukk rebung.jpg', daerah_asal: 'Kalianda' },
+  { id: 'inuh', nama: 'Tapis Inuh', gambar_url: '/images/inuh.jpg', daerah_asal: 'Pesisir Barat' },
 ];
 
 export default function KuisPage() {
@@ -29,7 +29,7 @@ export default function KuisPage() {
           Tarik garis penghubung dari gambar motif di sebelah kiri ke nama motif yang sesuai di sebelah kanan.
         </p>
       </header>
-      <MotifMatchingQuiz motifs={STATIC_QUIZ_MOTIFS} />
+      <MotifMatchingQuiz motifs={QUIZ_MOTIFS} />
     </div>
   );
 }
